@@ -895,6 +895,7 @@ cameras. Useful if connection and USB camera</string>
         <layout class="QGridLayout" name="gridLayout_9">
          <item row="0" column="0">
           <layout class="QVBoxLayout" name="verticalLayout_11">
+
            <item>
             <widget class="QPushButton" name="pushButton_calibrate">
              <property name="sizePolicy">
@@ -937,6 +938,7 @@ just calculated or loaded.</string>
              </property>
             </widget>
            </item>
+
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <property name="spacing">
@@ -1292,6 +1294,43 @@ are used to refine the parameters</string>
              </property>
             </spacer>
            </item>
+
+           <item>
+            <widget class="QPushButton" name="pushButton_StartDSO">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Starting Direct Sparse Odometry.</string>
+             </property>
+             <property name="text">
+              <string>Start DSO</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+
           </layout>
          </item>
          <item row="0" column="1">

@@ -49,6 +49,10 @@ else()
 	message( FATAL_ERROR "GStreamer not found." )
 endif()
 
+
+add_subdirectory(dso)
+
+
 # Generate rules for building source files from the resources
 qt5_add_resources(QRCS resources.qrc)
 
@@ -92,6 +96,7 @@ target_include_directories(CameraCalibration PUBLIC
     include
     libs/gst_sink_opencv/include
     libs/qt_opencv_scene/include
+    dso/src
 )
 
 target_link_libraries(CameraCalibration PUBLIC
@@ -165,6 +170,8 @@ if(CMAKE_BUILD_TYPE STREQUAL Debug)
         opencv_imgproc
     )
 endif()
+
+target_link_libraries(CameraCalibration PUBLIC dso)
 
 if(WIN32)
     target_link_libraries(CameraCalibration PUBLIC

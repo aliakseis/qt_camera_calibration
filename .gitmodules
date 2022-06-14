@@ -1,0 +1,3 @@
+[submodule "CameraCalibration/dso"]
+	path = CameraCalibration/dso
+	url = https://github.com/aliakseis/dso
