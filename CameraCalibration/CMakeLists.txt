@@ -49,12 +49,18 @@ else()
 	message( FATAL_ERROR "GStreamer not found." )
 endif()
 
+find_package(Pangolin 0.2 QUIET)
 
 add_subdirectory(dso)
 
 
 # Generate rules for building source files from the resources
 qt5_add_resources(QRCS resources.qrc)
+
+
+if (MSVC)
+     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc -D_USE_MATH_DEFINES -D__SSE3__")
+endif (MSVC)
 
 
 add_executable(CameraCalibration WIN32 MACOSX_BUNDLE
@@ -171,7 +177,7 @@ if(CMAKE_BUILD_TYPE STREQUAL Debug)
     )
 endif()
 
-target_link_libraries(CameraCalibration PUBLIC dso)
+target_link_libraries(CameraCalibration PUBLIC dso  ${Pangolin_LIBRARIES})
 
 if(WIN32)
     target_link_libraries(CameraCalibration PUBLIC

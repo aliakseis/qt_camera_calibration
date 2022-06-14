@@ -8,7 +8,8 @@
 #include <QSound>
 #include <QMutex>
 
-#include <opencv2/core/core.hpp>
+//#include <opencv2/core/core.hpp>
+#include <opencv2/core/mat.hpp>
 
 #include "cameraman.h"
 
@@ -20,6 +21,12 @@ class QCameraCalibrate;
 namespace Ui
 {
 class MainWindow;
+}
+
+namespace dso
+{
+    class FullSystem;
+    class Undistort;
 }
 
 class MainWindow : public QMainWindow
@@ -127,6 +134,10 @@ private:
     QSound* mCbDetectedSnd;
 
     bool mDsoInitialized = false;
+
+    dso::FullSystem* fullSystem = 0;
+    dso::Undistort* undistorter = 0;
+    int frameID = 0;
 };
 
 #endif // MAINWINDOW_H

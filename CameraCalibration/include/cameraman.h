@@ -15,7 +15,7 @@ struct CameraMode
     double fps() const;
     QString getDescr() const;
 };
-
+    
 struct CameraDesc
 {
     QString id;

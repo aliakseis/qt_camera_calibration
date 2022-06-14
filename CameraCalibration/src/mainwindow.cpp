@@ -1,9 +1,33 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 
 #include "camerathread.h"
 #include "ffmpeg_sink.h"
 #include "qopencvscene.h"
+
+// DSO stuff
+#include "util/settings.h"
+#include "FullSystem/FullSystem.h"
+#include "util/Undistort.h"
+
+#include "IOWrapper/Output3DWrapper.h"
+#include "IOWrapper/ImageDisplay.h"
+
+
+#include "util/settings.h"
+#include "util/globalFuncs.h"
+//#include "util/DatasetReader.h"
+#include "util/globalCalib.h"
+
+#include "util/NumType.h"
+#include "FullSystem/FullSystem.h"
+#include "OptimizationBackend/MatrixAccumulators.h"
+#include "FullSystem/PixelSelector2.h"
+
+#include "IOWrapper/Pangolin/PangolinDSOViewer.h"
+#include "IOWrapper/OutputWrapper/SampleOutputWrapper.h"
+
+#include "ui_mainwindow.h"
+
 
 #include <QCameraInfo>
 #include <QGLWidget>
@@ -377,6 +401,45 @@ void MainWindow::onNewImage( cv::Mat frame )
         int percInt = static_cast<int>(perc*100);
 
         ui->progressBar_camBuffer->setValue(percInt);
+    }
+
+    // DSO stuff
+    //assert(cv_ptr->image.type() == CV_8U);
+    //assert(cv_ptr->image.channels() == 1);
+
+    using namespace dso;
+
+    if (mDsoInitialized)
+    {
+        if (setting_fullResetRequested)
+        {
+            std::vector<IOWrap::Output3DWrapper*> wraps = fullSystem->outputWrapper;
+            delete fullSystem;
+            for (IOWrap::Output3DWrapper* ow : wraps) ow->reset();
+            fullSystem = new FullSystem();
+            fullSystem->linearizeOperation = false;
+            fullSystem->outputWrapper = wraps;
+            if (undistorter->photometricUndist != 0)
+                fullSystem->setGammaFunction(undistorter->photometricUndist->getG());
+            setting_fullResetRequested = false;
+        }
+
+        cv::Mat imgGray;
+        if (frame.channels() == 1)
+        {
+            imgGray = frame;
+        }
+        else
+        {
+            cv::cvtColor(frame, imgGray, cv::COLOR_BGR2GRAY);
+        }
+        MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
+        ImageAndExposure* undistImg = undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0f);
+        // TODO?
+        //undistImg->timestamp = img->header.stamp.toSec(); // relay the timestamp to dso
+        fullSystem->addActiveFrame(undistImg, frameID);
+        frameID++;
+        delete undistImg;
     }
 }
 
@@ -1002,7 +1065,6 @@ void MainWindow::on_pushButton_StartDSO_clicked()
     if (mDsoInitialized)
         return;
 
+    //
     mDsoInitialized = true;
-
-
 }
