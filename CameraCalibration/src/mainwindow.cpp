@@ -994,3 +994,15 @@ void MainWindow::on_checkBox_fisheye_clicked(bool checked)
         updateParamGUI(K, D);
     }
 }
+
+void MainWindow::on_pushButton_StartDSO_clicked()
+{
+    //mCbDetectedSnd->play();
+
+    if (mDsoInitialized)
+        return;
+
+    mDsoInitialized = true;
+
+
+}

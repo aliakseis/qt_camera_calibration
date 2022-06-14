@@ -85,6 +85,8 @@ private slots:
 
     void on_checkBox_fisheye_clicked(bool checked);
 
+    void on_pushButton_StartDSO_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -123,6 +125,8 @@ private:
     QCameraCalibrate* mCameraCalib;
 
     QSound* mCbDetectedSnd;
+
+    bool mDsoInitialized = false;
 };
 
 #endif // MAINWINDOW_H
