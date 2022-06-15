@@ -19,6 +19,7 @@ public:
 
     double getBufPerc() override;
     void dataConsumed() override {}
+    cv::Size getSize() override { return {}; }
 
 signals:
     void newImage( cv::Mat frame );

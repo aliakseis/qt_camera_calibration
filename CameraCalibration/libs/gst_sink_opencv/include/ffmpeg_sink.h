@@ -6,8 +6,6 @@
 #include <utility>
 #include <atomic>
 
-#include <opencv2/core/core.hpp>
-
 struct AVFormatContext;
 struct AVCodecContext;
 
@@ -26,6 +24,7 @@ public:
 
     double getBufPerc() override { return m_queueSize / 10.; }
     void dataConsumed() override { --m_queueSize; }
+    cv::Size getSize() override;
 
 signals:
     void newImage(cv::Mat frame);

@@ -527,11 +527,22 @@ void MainWindow::on_pushButton_camera_connect_disconnect_clicked(bool checked)
         bool fisheye = ui->checkBox_fisheye->isChecked();
 
         const int maxCount = ui->lineEdit_cb_max_count->text().toInt();
+
+        const bool cameraStarted = startCamera();
+
+        if (cameraStarted && ui->ffmpegSource->isChecked())
+        {
+            auto size = mCameraThread->getSize();
+            mSrcWidth = size.width;
+            mSrcHeight = size.height;
+        }
+
         mCameraCalib = new QCameraCalibrate( cv::Size(mSrcWidth, mSrcHeight), mCbSize, mCbSizeMm, fisheye, maxCount );
 
         connect( mCameraCalib, &QCameraCalibrate::newCameraParams,
                  this, &MainWindow::onNewCameraParams );
 
+        /*
         cv::Size imgSize;
         cv::Mat K;
         cv::Mat D;
@@ -542,8 +553,10 @@ void MainWindow::on_pushButton_camera_connect_disconnect_clicked(bool checked)
         ui->horizontalSlider_alpha->setValue( static_cast<int>( alpha*ui->horizontalSlider_alpha->maximum() ) );
 
         updateParamGUI(K,D);
+        */
+        setNewCameraParams();
 
-        if( startCamera() )
+        if (cameraStarted)
         {
             ui->pushButton_camera_connect_disconnect->setText( tr("Stop Camera") );
 
@@ -922,68 +935,87 @@ void MainWindow::on_pushButton_load_params_clicked()
 {
     QString filter1 = tr("OpenCV YAML (*.yaml *.yml)");
     QString filter2 = tr("XML (*.xml)");
+    QString filter3 = tr("TXT (*.txt)");
 
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Save Camera Calibration Parameters"), QDir::homePath(),
-                                                    tr("%1;;%2").arg(filter1).arg(filter2) );
+                                                    tr("%1;;%2;;%3").arg(filter1, filter2, filter3) );
 
     if( fileName.isEmpty() ) {
         return;
     }
 
+    const bool forDso = fileName.endsWith(".txt", Qt::CaseInsensitive);
+
     // Not using the function from CameraUndistort to verify that they are coherent before setting them
 
-    cv::FileStorage fs( fileName.toStdString(), cv::FileStorage::READ||cv::FileStorage::FORMAT_AUTO );
+    bool fisheye = false;
+    double alpha = 0;
 
-    if( fs.isOpened() )
+    cv::Mat K;
+    cv::Mat D;
+
+    if (forDso)
+    { 
+        undistorter.reset(dso::Undistort::getUndistorterForFile(QFile::encodeName(fileName).constData(), {}, {}));
+        auto v = undistorter->getK();
+        K = cv::Mat(v.rows(), v.cols(), CV_64FC1, v.data()).clone();
+        D = cv::Mat(8, 1, CV_64F, cv::Scalar::all(0.0F));
+    }
+    else
     {
-        int w;
-        int h;
-        bool fisheye;
-        double alpha;
-
-        fs["Width"] >> w;
-        fs["Height"] >> h;
-        fs["FishEye"] >> fisheye;
-        fs["Alpha"] >> alpha;
-
-        const auto& camera = mCameras[ui->comboBox_camera->currentIndex()];
-
-        bool matched = false;
-        for( int i = 0; i < camera.modes.size(); i++ )
+        cv::FileStorage fs( fileName.toStdString(), cv::FileStorage::READ||cv::FileStorage::FORMAT_AUTO );
+        if (!fs.isOpened())
         {
-            const auto& mode = camera.modes[ui->comboBox_camera_res->currentIndex()];
-
-            if( mode.w==w && mode.h==h )
-            {
-                matched=true;
-                ui->comboBox_camera_res->setCurrentIndex(i);
-                break;
-            }
-        }
-
-        if(!matched)
-        {
-            QMessageBox::warning( this, tr("Warning"), tr("Current camera does not support the resolution\n"
-                                                          "%1x%2 loaded from the file:\n"
-                                                          "%3").arg(w).arg(h).arg(fileName));
             return;
         }
 
-        cv::Mat K;
-        cv::Mat D;
+        fs["FishEye"] >> fisheye;
+        fs["Alpha"] >> alpha;
+
+        if (!ui->ffmpegSource->isChecked())
+        {
+            int w;
+            int h;
+
+            fs["Width"] >> w;
+            fs["Height"] >> h;
+
+            const auto& camera = mCameras[ui->comboBox_camera->currentIndex()];
+
+            bool matched = false;
+            for (int i = 0; i < camera.modes.size(); i++)
+            {
+                const auto& mode = camera.modes[ui->comboBox_camera_res->currentIndex()];
+
+                if (mode.w == w && mode.h == h)
+                {
+                    matched = true;
+                    ui->comboBox_camera_res->setCurrentIndex(i);
+                    break;
+                }
+            }
+
+            if (!matched)
+            {
+                QMessageBox::warning(this, tr("Warning"), tr("Current camera does not support the resolution\n"
+                    "%1x%2 loaded from the file:\n"
+                    "%3").arg(w).arg(h).arg(fileName));
+                return;
+            }
+        }
 
         fs["CameraMatrix"] >> K;
         fs["DistCoeffs"] >> D;
-
-        ui->checkBox_fisheye->setChecked(fisheye);
-
-        ui->horizontalSlider_alpha->setValue( static_cast<int>(alpha*ui->horizontalSlider_alpha->maximum()) );
-
-        updateParamGUI(K,D);
-
-        setNewCameraParams();
     }
+
+    ui->checkBox_fisheye->setChecked(fisheye);
+
+    ui->horizontalSlider_alpha->setValue( static_cast<int>(alpha*ui->horizontalSlider_alpha->maximum()) );
+
+    updateParamGUI(K,D);
+
+    setNewCameraParams();
 }
 
 void MainWindow::on_pushButton_save_params_clicked()

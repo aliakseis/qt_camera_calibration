@@ -48,6 +48,13 @@ bool FFmpegThread::init()
         return false;
     }
 
+    // Retrieve stream information
+    if (avformat_find_stream_info(m_formatContext, nullptr) < 0)
+    {
+        assert(false && "Couldn't find stream information");
+        return false;
+    }
+
     m_streamNumber = av_find_best_stream(m_formatContext, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
     if (m_streamNumber < 0) {
         return false;
@@ -76,6 +83,13 @@ bool FFmpegThread::init()
     }
 
     return true;
+}
+
+cv::Size FFmpegThread::getSize()
+{
+    if (m_codecContext)
+        return { m_codecContext->width, m_codecContext->height };
+    return {};
 }
 
 void FFmpegThread::run()
