@@ -274,7 +274,7 @@ bool MainWindow::startCamera()
         mCameraThread = ffmpegThread;
 
         connect(ffmpegThread, &FFmpegThread::cameraDisconnected, this, &MainWindow::onCameraDisconnected);
-        connect(ffmpegThread, &FFmpegThread::newImage, this, &MainWindow::onNewImage);
+        connect(ffmpegThread, &FFmpegThread::newImage, this, &MainWindow::onNewImage, Qt::BlockingQueuedConnection);
     }
     else
     {
@@ -466,9 +466,11 @@ void MainWindow::onNewImage( cv::Mat frame )
         if (setting_fullResetRequested)
         {
             std::vector<IOWrap::Output3DWrapper*> wraps = fullSystem->outputWrapper;
-            delete fullSystem;
-            for (IOWrap::Output3DWrapper* ow : wraps) ow->reset();
-            fullSystem = new FullSystem();
+            //delete fullSystem;
+            fullSystem.reset();
+            for (IOWrap::Output3DWrapper* ow : wraps)
+                ow->reset();
+            fullSystem.reset(new FullSystem());
             fullSystem->linearizeOperation = false;
             fullSystem->outputWrapper = wraps;
             if (undistorter->photometricUndist != 0)
@@ -1146,10 +1148,58 @@ void MainWindow::on_checkBox_fisheye_clicked(bool checked)
 
 void MainWindow::on_pushButton_StartDSO_clicked()
 {
+
     //mCbDetectedSnd->play();
+
+    if (!undistorter)
+        return;
 
     if (mDsoInitialized)
         return;
+
+
+    using namespace dso;
+
+    setting_desiredImmatureDensity = 1000;
+    setting_desiredPointDensity = 1200;
+    setting_minFrames = 5;
+    setting_maxFrames = 7;
+    setting_maxOptIterations = 4;
+    setting_minOptIterations = 1;
+    setting_logStuff = false;
+    setting_kfGlobalWeight = 1.3;
+
+
+    printf("MODE WITH CALIBRATION, but without exposure times!\n");
+    setting_photometricCalibration = 2;
+    setting_affineOptModeA = 0;
+    setting_affineOptModeB = 0;
+
+
+    setGlobalCalib(
+        (int)undistorter->getSize()[0],
+        (int)undistorter->getSize()[1],
+        undistorter->getK().cast<float>());
+
+
+    fullSystem.reset(new FullSystem());
+    fullSystem->linearizeOperation = false;
+
+
+    if (!disableAllDisplay)
+        fullSystem->outputWrapper.push_back(new IOWrap::PangolinDSOViewer(
+        (int)undistorter->getSize()[0],
+            (int)undistorter->getSize()[1]));
+
+
+    //if (useSampleOutput)
+    //    fullSystem->outputWrapper.push_back(new IOWrap::SampleOutputWrapper());
+
+
+    if (undistorter->photometricUndist != 0)
+        fullSystem->setGammaFunction(undistorter->photometricUndist->getG());
+
+
 
     //
     mDsoInitialized = true;

@@ -137,7 +137,7 @@ private:
 
     bool mDsoInitialized = false;
 
-    dso::FullSystem* fullSystem = 0;
+    std::unique_ptr<dso::FullSystem> fullSystem;
     std::unique_ptr<dso::Undistort> undistorter;
     int frameID = 0;
 };
