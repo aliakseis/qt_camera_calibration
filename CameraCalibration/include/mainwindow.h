@@ -13,6 +13,8 @@
 
 #include "cameraman.h"
 
+#include <memory>
+
 class CameraThreadBase;
 class QOpenCVScene;
 
@@ -53,7 +55,7 @@ public slots:
 
 protected slots:
     void onCameraConnected();
-    void onCameraDisconnected();
+    void onCameraDisconnected(bool ok);
     void onProcessReadyRead();
 
     void updateParamGUI(cv::Mat K, cv::Mat D);
@@ -136,7 +138,7 @@ private:
     bool mDsoInitialized = false;
 
     dso::FullSystem* fullSystem = 0;
-    dso::Undistort* undistorter = 0;
+    std::unique_ptr<dso::Undistort> undistorter;
     int frameID = 0;
 };
 
