@@ -372,8 +372,8 @@ void MainWindow::onNewImage( cv::Mat frame )
                                         Qt::KeepAspectRatio );
         ui->graphicsView_checkboard->fitInView(QRectF(0,0, frame.cols, frame.rows),
                                                Qt::KeepAspectRatio );
-        ui->graphicsView_undistorted->fitInView(QRectF(0,0, frame.cols, frame.rows),
-                                                Qt::KeepAspectRatio );
+        //ui->graphicsView_undistorted->fitInView(QRectF(0,0, frame.cols, frame.rows),
+        //                                        Qt::KeepAspectRatio );
         frameW = frame.cols;
         frameH = frame.rows;
     }
@@ -384,21 +384,64 @@ void MainWindow::onNewImage( cv::Mat frame )
 
     frmCnt++;
 
+    
+
     if( ui->pushButton_calibrate->isChecked() && frmCnt%((int)mSrcFps) == 0 )
     {
         auto* elab = new QChessboardElab( this, frame, mCbSize, mCbSizeMm, mCameraCalib );
         mElabPool.tryStart(elab);
     }
 
-    cv::Mat rectified = mCameraCalib->undistort( frame );
+    //
+    std::unique_ptr<dso::ImageAndExposure> undistImg;
+    if (undistorter)
+    {
+        cv::Mat imgGray;
+        if (frame.channels() == 1)
+        {
+            imgGray = frame;
+        }
+        else
+        {
+            cv::cvtColor(frame, imgGray, cv::COLOR_BGR2GRAY);
+        }
+        dso::MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
+        undistImg.reset(undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0f));
+    }
+
+    cv::Mat rectified;
+    if (undistImg)
+    {
+        const cv::Mat src(undistImg->h, undistImg->w, CV_32FC1, undistImg->image);
+        src.convertTo(rectified, CV_8U);
+    }
+    else
+    {
+        rectified = mCameraCalib->undistort(frame);
+    }
+
+    auto fitUndistorted = [this](int w, int h) {
+        static int frameW = 0;
+        static int frameH = 0;
+
+        if (frameW != w || frameH != h)
+        {
+            ui->graphicsView_undistorted->fitInView(QRectF(0, 0, w, h),
+                Qt::KeepAspectRatio);
+            frameW = w;
+            frameH = h;
+        }
+    };
 
     if( rectified.empty() )
     {
+        fitUndistorted(pixmap.width(), pixmap.height());
         mCameraSceneUndistorted->setFgImage(pixmap);
         ui->graphicsView_undistorted->setBackgroundBrush( QBrush( QColor(150,50,50) ) );
     }
     else
     {
+        fitUndistorted(rectified.cols, rectified.rows);
         mCameraSceneUndistorted->setFgImage(rectified);
         ui->graphicsView_undistorted->setBackgroundBrush( QBrush( QColor(50,150,50) ) );
     }
@@ -433,22 +476,24 @@ void MainWindow::onNewImage( cv::Mat frame )
             setting_fullResetRequested = false;
         }
 
-        cv::Mat imgGray;
-        if (frame.channels() == 1)
-        {
-            imgGray = frame;
-        }
-        else
-        {
-            cv::cvtColor(frame, imgGray, cv::COLOR_BGR2GRAY);
-        }
-        MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
-        ImageAndExposure* undistImg = undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0f);
+        //cv::Mat imgGray;
+        //if (frame.channels() == 1)
+        //{
+        //    imgGray = frame;
+        //}
+        //else
+        //{
+        //    cv::cvtColor(frame, imgGray, cv::COLOR_BGR2GRAY);
+        //}
+        //MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
+
+        //ImageAndExposure* undistImg = undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0f);
         // TODO?
         //undistImg->timestamp = img->header.stamp.toSec(); // relay the timestamp to dso
-        fullSystem->addActiveFrame(undistImg, frameID);
+
+        fullSystem->addActiveFrame(undistImg.get(), frameID);
         frameID++;
-        delete undistImg;
+        //delete undistImg;
     }
 }
 
