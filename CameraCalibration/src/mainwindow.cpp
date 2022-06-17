@@ -274,7 +274,7 @@ bool MainWindow::startCamera()
         mCameraThread = ffmpegThread;
 
         connect(ffmpegThread, &FFmpegThread::cameraDisconnected, this, &MainWindow::onCameraDisconnected);
-        connect(ffmpegThread, &FFmpegThread::newImage, this, &MainWindow::onNewImage, Qt::BlockingQueuedConnection);
+        connect(ffmpegThread, &FFmpegThread::newImage, this, &MainWindow::onNewImage);
     }
     else
     {
