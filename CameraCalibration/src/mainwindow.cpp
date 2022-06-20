@@ -40,6 +40,8 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 
+#include <opencv2/core/eigen.hpp>
+
 #include <vector>
 
 #include "qchessboardelab.h"
@@ -1230,6 +1232,17 @@ void MainWindow::on_pushButton_StartDSO_clicked()
     setting_affineOptModeA = 0;
     setting_affineOptModeB = 0;
 
+    // TODO use
+    dso::Mat33 k;
+    {
+        cv::Size imgSize;
+        cv::Mat K;
+        cv::Mat D;
+        double alpha;
+        bool fisheye;
+        mCameraCalib->getCameraParams(imgSize, K, D, alpha, fisheye);
+        cv::cv2eigen(K, k);
+    }
 
     setGlobalCalib(
         (int)undistorter->getSize()[0],
@@ -1251,7 +1264,7 @@ void MainWindow::on_pushButton_StartDSO_clicked()
     //    fullSystem->outputWrapper.push_back(new IOWrap::SampleOutputWrapper());
 
 
-    if (undistorter->photometricUndist != 0)
+    if (undistorter && undistorter->photometricUndist != 0)
         fullSystem->setGammaFunction(undistorter->photometricUndist->getG());
 
 
