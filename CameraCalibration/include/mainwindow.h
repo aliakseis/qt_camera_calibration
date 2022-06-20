@@ -87,6 +87,7 @@ private slots:
 
     void on_pushButton_calibrate_clicked(bool checked);
 
+    void on_pushButton_reset_params_clicked();
     void on_pushButton_load_params_clicked();
     void on_pushButton_save_params_clicked();
 

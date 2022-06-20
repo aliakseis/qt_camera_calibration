@@ -405,6 +405,15 @@ void MainWindow::onNewImage( cv::Mat frame )
         {
             cv::cvtColor(frame, imgGray, cv::COLOR_BGR2GRAY);
         }
+
+        // TODO do we need it?
+        if (imgGray.cols != undistorter->getOriginalSize()[0] || imgGray.rows != undistorter->getOriginalSize()[1])
+        {
+            cv::resize(imgGray, imgGray,
+                { undistorter->getOriginalSize()[0], undistorter->getOriginalSize()[1] },
+                0, 0, cv::INTER_LANCZOS4);
+        }
+
         dso::MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
         undistImg.reset(undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0f));
     }
@@ -976,6 +985,39 @@ void MainWindow::on_lineEdit_p2_editingFinished()
 void MainWindow::on_pushButton_calibrate_clicked(bool checked)
 {
     ui->groupBox_params->setEnabled(!checked);
+}
+
+void MainWindow::on_pushButton_reset_params_clicked()
+{
+    updateCbParams();
+
+    if (mCameraCalib)
+    {
+        disconnect(mCameraCalib, &QCameraCalibrate::newCameraParams,
+            this, &MainWindow::onNewCameraParams);
+
+        delete mCameraCalib;
+    }
+
+    bool fisheye = ui->checkBox_fisheye->isChecked();
+
+    const int maxCount = ui->lineEdit_cb_max_count->text().toInt();
+
+    mCameraCalib = new QCameraCalibrate(cv::Size(mSrcWidth, mSrcHeight), mCbSize, mCbSizeMm, fisheye, maxCount);
+
+    connect(mCameraCalib, &QCameraCalibrate::newCameraParams,
+        this, &MainWindow::onNewCameraParams);
+
+    cv::Size imgSize;
+    cv::Mat K;
+    cv::Mat D;
+    double alpha;
+    mCameraCalib->getCameraParams( imgSize, K, D, alpha, fisheye );
+
+    ui->checkBox_fisheye->setChecked(fisheye);
+    ui->horizontalSlider_alpha->setValue( static_cast<int>( alpha*ui->horizontalSlider_alpha->maximum() ) );
+
+    updateParamGUI(K,D);
 }
 
 void MainWindow::on_pushButton_load_params_clicked()
