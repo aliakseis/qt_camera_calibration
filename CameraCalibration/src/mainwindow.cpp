@@ -427,6 +427,19 @@ void MainWindow::onNewImage( cv::Mat frame )
     else
     {
         rectified = mCameraCalib->undistort(frame);
+        // use rectified
+        cv::Mat imgGray;
+        if (rectified.channels() == 1)
+        {
+            imgGray = rectified;
+        }
+        else
+        {
+            cv::cvtColor(rectified, imgGray, cv::COLOR_BGR2GRAY);
+        }
+
+        dso::MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
+        undistImg.reset(undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0f));
     }
 
     auto fitUndistorted = [this](int w, int h) {
