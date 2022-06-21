@@ -1208,8 +1208,8 @@ void MainWindow::on_pushButton_StartDSO_clicked()
 
     //mCbDetectedSnd->play();
 
-    if (!undistorter)
-        return;
+    //if (!undistorter)
+    //    return;
 
     if (mDsoInitialized)
         return;
@@ -1232,8 +1232,16 @@ void MainWindow::on_pushButton_StartDSO_clicked()
     setting_affineOptModeA = 0;
     setting_affineOptModeB = 0;
 
-    // TODO use
+    int w;
+    int h;
     dso::Mat33 k;
+    if (undistorter)
+    {
+        w = undistorter->getSize()[0];
+        h = undistorter->getSize()[1];
+        k = undistorter->getK();
+    }
+    else
     {
         cv::Size imgSize;
         cv::Mat K;
@@ -1241,13 +1249,17 @@ void MainWindow::on_pushButton_StartDSO_clicked()
         double alpha;
         bool fisheye;
         mCameraCalib->getCameraParams(imgSize, K, D, alpha, fisheye);
+        w = imgSize.width;
+        h = imgSize.height;
         cv::cv2eigen(K, k);
     }
 
     setGlobalCalib(
-        (int)undistorter->getSize()[0],
-        (int)undistorter->getSize()[1],
-        undistorter->getK().cast<float>());
+        //(int)undistorter->getSize()[0],
+        //(int)undistorter->getSize()[1],
+        //undistorter->getK()
+        w, h,
+        k.cast<float>());
 
 
     fullSystem.reset(new FullSystem());
@@ -1255,9 +1267,9 @@ void MainWindow::on_pushButton_StartDSO_clicked()
 
 
     if (!disableAllDisplay)
-        fullSystem->outputWrapper.push_back(new IOWrap::PangolinDSOViewer(
-        (int)undistorter->getSize()[0],
-            (int)undistorter->getSize()[1]));
+        fullSystem->outputWrapper.push_back(new IOWrap::PangolinDSOViewer(w, h));
+            //(int)undistorter->getSize()[0],
+            //(int)undistorter->getSize()[1]));
 
 
     //if (useSampleOutput)
