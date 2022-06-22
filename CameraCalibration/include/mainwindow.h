@@ -47,6 +47,8 @@ protected:
     bool startCamera();
     void stopCamera();
 
+    void startDso();
+
 public slots:
     void onNewImage(cv::Mat frame);
     void onNewCbImage(cv::Mat cbImage);
@@ -137,6 +139,8 @@ private:
     QSound* mCbDetectedSnd;
 
     bool mDsoInitialized = false;
+
+    bool mDsoInitializationPostponed = false;
 
     std::unique_ptr<dso::FullSystem> fullSystem;
     std::unique_ptr<dso::Undistort> undistorter;

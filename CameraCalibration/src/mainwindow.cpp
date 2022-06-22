@@ -440,8 +440,11 @@ void MainWindow::onNewImage( cv::Mat frame )
             cv::cvtColor(rectified, imgGray, cv::COLOR_BGR2GRAY);
         }
 
-        dso::MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
-        undistImg.reset(undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0f));
+        //dso::MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
+        //undistImg.reset(undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0f));
+        undistImg.reset(new dso::ImageAndExposure(imgGray.cols, imgGray.rows));
+        cv::Mat dst(undistImg->h, undistImg->w, CV_32FC1, undistImg->image);
+        imgGray.convertTo(dst, CV_32F);
     }
 
     auto fitUndistorted = [this](int w, int h) {
@@ -657,6 +660,11 @@ void MainWindow::on_pushButton_camera_connect_disconnect_clicked(bool checked)
 
             ui->pushButton_load_params->setEnabled(true);
             ui->pushButton_save_params->setEnabled(false);
+        }
+
+        if (mDsoInitializationPostponed)
+        {
+            startDso();
         }
     }
     else
@@ -1211,6 +1219,17 @@ void MainWindow::on_pushButton_StartDSO_clicked()
     //if (!undistorter)
     //    return;
 
+    if (!undistorter && !ui->pushButton_camera_connect_disconnect->isChecked())
+    {
+        mDsoInitializationPostponed = true;
+        return;
+    }
+
+    startDso();
+}
+
+ void MainWindow::startDso()
+ {
     if (mDsoInitialized)
         return;
 
