@@ -598,7 +598,9 @@ cameras. Useful if connection and USB camera</string>
                <property name="spacing">
                 <number>1</number>
                </property>
+
                <item row="0" column="0">
+
                 <widget class="QLineEdit" name="lineEdit_k1">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -619,7 +621,28 @@ cameras. Useful if connection and USB camera</string>
                  </property>
                 </widget>
                </item>
+
                <item row="0" column="1">
+             <widget class="QCheckBox" name="checkBox_fix_k1">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>Fix</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+               </item>
+
+               <item row="0" column="2">
                 <widget class="QLineEdit" name="lineEdit_k2">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -640,7 +663,31 @@ cameras. Useful if connection and USB camera</string>
                  </property>
                 </widget>
                </item>
-               <item row="0" column="2">
+
+
+
+               <item row="0" column="3">
+             <widget class="QCheckBox" name="checkBox_fix_k2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>Fix</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+               </item>
+
+
+               <item row="0" column="4">
                 <widget class="QLineEdit" name="lineEdit_k3">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -661,6 +708,30 @@ cameras. Useful if connection and USB camera</string>
                  </property>
                 </widget>
                </item>
+
+
+
+               <item row="0" column="5">
+             <widget class="QCheckBox" name="checkBox_fix_k3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>Fix</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+               </item>
+
+
                <item row="1" column="0">
                 <widget class="QLineEdit" name="lineEdit_k4">
                  <property name="sizePolicy">
@@ -682,7 +753,30 @@ cameras. Useful if connection and USB camera</string>
                  </property>
                 </widget>
                </item>
+
+
                <item row="1" column="1">
+             <widget class="QCheckBox" name="checkBox_fix_k4">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>Fix</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+               </item>
+
+
+               <item row="1" column="2">
                 <widget class="QLineEdit" name="lineEdit_k5">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -703,7 +797,30 @@ cameras. Useful if connection and USB camera</string>
                  </property>
                 </widget>
                </item>
-               <item row="1" column="2">
+
+
+               <item row="1" column="3">
+             <widget class="QCheckBox" name="checkBox_fix_k5">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>Fix</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+               </item>
+
+
+               <item row="1" column="4">
                 <widget class="QLineEdit" name="lineEdit_k6">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -724,6 +841,29 @@ cameras. Useful if connection and USB camera</string>
                  </property>
                 </widget>
                </item>
+
+
+               <item row="1" column="5">
+             <widget class="QCheckBox" name="checkBox_fix_k6">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>Fix</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+               </item>
+
+
                <item row="2" column="0">
                 <widget class="QLineEdit" name="lineEdit_p1">
                  <property name="sizePolicy">
@@ -745,7 +885,7 @@ cameras. Useful if connection and USB camera</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="1">
+               <item row="2" column="2">
                 <widget class="QLineEdit" name="lineEdit_p2">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -772,7 +912,7 @@ cameras. Useful if connection and USB camera</string>
 
 
             <item row="2" column="0" colspan="2">
-             <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <layout class="QHBoxLayout" name="horizontalLayout_41">
 
             <item>
              <widget class="QPushButton" name="pushButton_reset_params">
