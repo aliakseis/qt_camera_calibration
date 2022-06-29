@@ -26,7 +26,7 @@ public:
     }
 
     void getCameraParams( cv::Size& imgSize, cv::Mat& K, cv::Mat& D, double& alpha, bool& fisheye);
-    bool setCameraParams(cv::Size imgSize, cv::Mat& K, cv::Mat& D, double alpha, bool fishEye);
+    bool setCameraParams(cv::Size imgSize, cv::Mat& K, cv::Mat& D, double alpha, bool fishEye, int additionalFlags);
 
     void setNewAlpha( double alpha );
     void setFisheye( bool fisheye );
@@ -50,6 +50,8 @@ private:
 
     bool mCoeffReady;
     bool mRefined;
+
+    int mAdditionalFlags = 0;
 
     cv::Size mImgSize;
     cv::Size mCbSize;

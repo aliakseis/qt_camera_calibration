@@ -68,7 +68,7 @@ void QCameraCalibrate::getCameraParams( cv::Size& imgSize, cv::Mat &K, cv::Mat &
     mUndistort->getCameraParams( imgSize, fisheye, K, D, alpha );
 }
 
-bool QCameraCalibrate::setCameraParams(cv::Size imgSize, cv::Mat &K, cv::Mat &D, double alpha, bool fishEye )
+bool QCameraCalibrate::setCameraParams(cv::Size imgSize, cv::Mat &K, cv::Mat &D, double alpha, bool fishEye, int additionalFlags)
 {
     if( !mUndistort ) {
         return false;
@@ -86,6 +86,8 @@ bool QCameraCalibrate::setCameraParams(cv::Size imgSize, cv::Mat &K, cv::Mat &D,
 
     mRefined = false;
     mCoeffReady = false;
+
+    mAdditionalFlags = additionalFlags;
 
     return false;
 }
@@ -151,7 +153,7 @@ void QCameraCalibrate::addCorners( vector<cv::Point2f>& img_corners )
         else
         {
             // >>>>> Calibration flags
-            int mCalibFlags = cv::CALIB_RATIONAL_MODEL; // Using Camera model with 8 distorsion parameters
+            int mCalibFlags = mAdditionalFlags | cv::CALIB_RATIONAL_MODEL; // Using Camera model with 8 distorsion parameters
             if( mRefined )
             {
                 mCalibFlags |= cv::CALIB_USE_INTRINSIC_GUESS;

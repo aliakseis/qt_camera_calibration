@@ -921,7 +921,21 @@ void MainWindow::setNewCameraParams()
     double alpha = static_cast<double>(ui->horizontalSlider_alpha->value())/ui->horizontalSlider_alpha->maximum();
     bool fisheye = ui->checkBox_fisheye->isChecked();
 
-    mCameraCalib->setCameraParams( cv::Size(mSrcWidth,mSrcHeight), K, D, alpha, fisheye );
+    int additionalFlags = 0;
+    if (ui->checkBox_fix_k1->isChecked())
+        additionalFlags |= cv::CALIB_FIX_K1;
+    if (ui->checkBox_fix_k2->isChecked())
+        additionalFlags |= cv::CALIB_FIX_K2;
+    if (ui->checkBox_fix_k3->isChecked())
+        additionalFlags |= cv::CALIB_FIX_K3;
+    if (ui->checkBox_fix_k4->isChecked())
+        additionalFlags |= cv::CALIB_FIX_K4;
+    if (ui->checkBox_fix_k5->isChecked())
+        additionalFlags |= cv::CALIB_FIX_K5;
+    if (ui->checkBox_fix_k6->isChecked())
+        additionalFlags |= cv::CALIB_FIX_K6;
+
+    mCameraCalib->setCameraParams( cv::Size(mSrcWidth,mSrcHeight), K, D, alpha, fisheye, additionalFlags);
 }
 
 void MainWindow::on_lineEdit_fx_editingFinished()
