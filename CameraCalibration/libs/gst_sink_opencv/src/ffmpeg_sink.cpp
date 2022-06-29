@@ -13,7 +13,7 @@ struct AVFrameDeleter
     void operator()(AVFrame *frame) const { av_frame_free(&frame); };
 };
 
-typedef std::unique_ptr<AVFrame, AVFrameDeleter> AVFramePtr;
+using AVFramePtr = std::unique_ptr<AVFrame, AVFrameDeleter>;
 
 FFmpegThread::~FFmpegThread()
 {
@@ -87,8 +87,9 @@ bool FFmpegThread::init()
 
 cv::Size FFmpegThread::getSize()
 {
-    if (m_codecContext)
+    if (m_codecContext) {
         return { m_codecContext->width, m_codecContext->height };
+}
     return {};
 }
 
@@ -115,7 +116,7 @@ void FFmpegThread::run()
                 AVPacket avEncodedPacket;
 
                 av_init_packet(&avEncodedPacket);
-                avEncodedPacket.data = NULL;
+                avEncodedPacket.data = nullptr;
                 avEncodedPacket.size = 0;
 
 
@@ -124,7 +125,7 @@ void FFmpegThread::run()
                 int stride = img.step[0];
 
                 auto img_convert_ctx = sws_getCachedContext(
-                    NULL,
+                    nullptr,
                     m_codecContext->width,
                     m_codecContext->height,
                     m_codecContext->pix_fmt,
@@ -132,15 +133,16 @@ void FFmpegThread::run()
                     m_codecContext->height,
                     AV_PIX_FMT_BGR24,
                     SWS_POINT,//SWS_FAST_BILINEAR,
-                    NULL, NULL, NULL);
+                    nullptr, nullptr, nullptr);
                 sws_scale(img_convert_ctx, videoFrame->data, videoFrame->linesize, 0, m_codecContext->height,
                     &img.data,
                     &stride);
 
                 {
                     QMutexLocker locker(&m_mtxQueueSize);
-                    while (!isInterruptionRequested() && m_queueSize >= MAX_QUEUE_SIZE)
+                    while (!isInterruptionRequested() && m_queueSize >= MAX_QUEUE_SIZE) {
                         m_cvQueueSize.wait(&m_mtxQueueSize);
+}
                 }
 
                 if (!isInterruptionRequested())

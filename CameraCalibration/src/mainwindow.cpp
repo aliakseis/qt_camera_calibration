@@ -36,6 +36,7 @@
 #include <QSound>
 #include <QSettings>
 
+#include <memory>
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
@@ -417,7 +418,7 @@ void MainWindow::onNewImage( cv::Mat frame )
         }
 
         dso::MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
-        undistImg.reset(undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0f));
+        undistImg.reset(undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0F));
     }
 
     cv::Mat rectified;
@@ -442,7 +443,7 @@ void MainWindow::onNewImage( cv::Mat frame )
 
         //dso::MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
         //undistImg.reset(undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0f));
-        undistImg.reset(new dso::ImageAndExposure(imgGray.cols, imgGray.rows));
+        undistImg = std::make_unique<dso::ImageAndExposure>(imgGray.cols, imgGray.rows);
         cv::Mat dst(undistImg->h, undistImg->w, CV_32FC1, undistImg->image);
         imgGray.convertTo(dst, CV_32F);
     }
@@ -495,13 +496,15 @@ void MainWindow::onNewImage( cv::Mat frame )
             std::vector<IOWrap::Output3DWrapper*> wraps = fullSystem->outputWrapper;
             //delete fullSystem;
             fullSystem.reset();
-            for (IOWrap::Output3DWrapper* ow : wraps)
+            for (IOWrap::Output3DWrapper* ow : wraps) {
                 ow->reset();
-            fullSystem.reset(new FullSystem());
+}
+            fullSystem = std::make_unique<FullSystem>();
             fullSystem->linearizeOperation = false;
             fullSystem->outputWrapper = wraps;
-            if (undistorter->photometricUndist != 0)
+            if (undistorter->photometricUndist != nullptr) {
                 fullSystem->setGammaFunction(undistorter->photometricUndist->getG());
+}
             setting_fullResetRequested = false;
         }
 
@@ -699,8 +702,9 @@ void MainWindow::onProcessReadyRead()
 
 bool MainWindow::killGstLaunch( )
 {
-    if (mGstProcess.state() != QProcess::Running)
+    if (mGstProcess.state() != QProcess::Running) {
         return true;
+}
 
     // >>>>> Kill gst-launch-1.0 processes
 
@@ -1230,8 +1234,9 @@ void MainWindow::on_pushButton_StartDSO_clicked()
 
  void MainWindow::startDso()
  {
-    if (mDsoInitialized)
+    if (mDsoInitialized) {
         return;
+}
 
 
     using namespace dso;
@@ -1281,12 +1286,13 @@ void MainWindow::on_pushButton_StartDSO_clicked()
         k.cast<float>());
 
 
-    fullSystem.reset(new FullSystem());
+    fullSystem = std::make_unique<FullSystem>();
     fullSystem->linearizeOperation = false;
 
 
-    if (!disableAllDisplay)
+    if (!disableAllDisplay) {
         fullSystem->outputWrapper.push_back(new IOWrap::PangolinDSOViewer(w, h));
+}
             //(int)undistorter->getSize()[0],
             //(int)undistorter->getSize()[1]));
 
@@ -1295,8 +1301,9 @@ void MainWindow::on_pushButton_StartDSO_clicked()
     //    fullSystem->outputWrapper.push_back(new IOWrap::SampleOutputWrapper());
 
 
-    if (undistorter && undistorter->photometricUndist != 0)
+    if (undistorter && undistorter->photometricUndist != nullptr) {
         fullSystem->setGammaFunction(undistorter->photometricUndist->getG());
+}
 
 
 
