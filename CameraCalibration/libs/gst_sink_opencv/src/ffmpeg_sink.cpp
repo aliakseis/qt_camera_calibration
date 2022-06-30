@@ -142,7 +142,7 @@ void FFmpegThread::run()
                     QMutexLocker locker(&m_mtxQueueSize);
                     while (!isInterruptionRequested() && m_queueSize >= MAX_QUEUE_SIZE) {
                         m_cvQueueSize.wait(&m_mtxQueueSize);
-}
+                    }
                 }
 
                 if (!isInterruptionRequested())

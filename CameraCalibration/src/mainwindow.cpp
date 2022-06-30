@@ -922,18 +922,24 @@ void MainWindow::setNewCameraParams()
     bool fisheye = ui->checkBox_fisheye->isChecked();
 
     int additionalFlags = 0;
-    if (ui->checkBox_fix_k1->isChecked())
+    if (ui->checkBox_fix_k1->isChecked()) {
         additionalFlags |= cv::CALIB_FIX_K1;
-    if (ui->checkBox_fix_k2->isChecked())
+    }
+    if (ui->checkBox_fix_k2->isChecked()) {
         additionalFlags |= cv::CALIB_FIX_K2;
-    if (ui->checkBox_fix_k3->isChecked())
+    }
+    if (ui->checkBox_fix_k3->isChecked()) {
         additionalFlags |= cv::CALIB_FIX_K3;
-    if (ui->checkBox_fix_k4->isChecked())
+    }
+    if (ui->checkBox_fix_k4->isChecked()) {
         additionalFlags |= cv::CALIB_FIX_K4;
-    if (ui->checkBox_fix_k5->isChecked())
+    }
+    if (ui->checkBox_fix_k5->isChecked()) {
         additionalFlags |= cv::CALIB_FIX_K5;
-    if (ui->checkBox_fix_k6->isChecked())
+    }
+    if (ui->checkBox_fix_k6->isChecked()) {
         additionalFlags |= cv::CALIB_FIX_K6;
+    }
 
     mCameraCalib->setCameraParams( cv::Size(mSrcWidth,mSrcHeight), K, D, alpha, fisheye, additionalFlags);
 }
