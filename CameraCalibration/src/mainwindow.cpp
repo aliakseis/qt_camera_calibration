@@ -441,11 +441,15 @@ void MainWindow::onNewImage( cv::Mat frame )
             cv::cvtColor(rectified, imgGray, cv::COLOR_BGR2GRAY);
         }
 
+        cv::Mat imgFloat;
+        imgGray.convertTo(imgFloat, CV_32F);
+
         //dso::MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
         //undistImg.reset(undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0f));
         undistImg = std::make_unique<dso::ImageAndExposure>(imgGray.cols, imgGray.rows);
         cv::Mat dst(undistImg->h, undistImg->w, CV_32FC1, undistImg->image);
-        imgGray.convertTo(dst, CV_32F);
+        //imgGray.convertTo(dst, CV_32F);
+        normalize(imgFloat, dst, 0, 255, cv::NORM_MINMAX);
     }
 
     auto fitUndistorted = [this](int w, int h) {
@@ -1094,8 +1098,10 @@ void MainWindow::on_pushButton_load_params_clicked()
     if (forDso)
     { 
         undistorter.reset(dso::Undistort::getUndistorterForFile(QFile::encodeName(fileName).constData(), {}, {}));
-        auto v = undistorter->getK();
-        K = cv::Mat(v.rows(), v.cols(), CV_64FC1, v.data()).clone();
+        auto k = undistorter->getK();
+        printf("\nUsed Kamera Matrix:\n");
+        std::cout << k << "\n\n";
+        cv::eigen2cv(k, K);
         D = cv::Mat(8, 1, CV_64F, cv::Scalar::all(0.0F));
     }
     else
