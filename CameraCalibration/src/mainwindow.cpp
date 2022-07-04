@@ -1071,6 +1071,144 @@ void MainWindow::on_pushButton_reset_params_clicked()
     updateParamGUI(K,D);
 }
 
+
+class UndistortPinholePlain : public dso::Undistort
+{
+public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+    UndistortPinholePlain(
+        float fx,
+        float fy,
+        float cx,
+        float cy,
+        int w_, int h_)
+    {
+        parsOrg = dso::VecX(5);
+
+        parsOrg[0] = fx;
+        parsOrg[1] = fy;
+        parsOrg[2] = cx;
+        parsOrg[3] = cy;
+
+        w = wOrg = w_;
+        h = hOrg = h_;
+
+        remapX = new float[w*h];
+        remapY = new float[w*h];
+
+        //if (outputCalibration[0] == -1)
+        //    makeOptimalK_crop();
+        //else if (outputCalibration[0] == -2)
+        //    makeOptimalK_full();
+        //else if (outputCalibration[0] == -3)
+        {
+            if (w != wOrg || h != hOrg)
+            {
+                printf("ERROR: rectification mode none requires input and output dimenstions to match!\n\n");
+                exit(1);
+            }
+            K.setIdentity();
+            K(0, 0) = parsOrg[0];
+            K(1, 1) = parsOrg[1];
+            K(0, 2) = parsOrg[2];
+            K(1, 2) = parsOrg[3];
+            passthrough = true;
+        }
+        //else
+        //{
+
+
+        //    if (outputCalibration[2] > 1 || outputCalibration[3] > 1)
+        //    {
+        //        printf("\n\n\nWARNING: given output calibration (%f %f %f %f) seems wrong. It needs to be relative to image width / height!\n\n\n",
+        //            outputCalibration[0], outputCalibration[1], outputCalibration[2], outputCalibration[3]);
+        //    }
+
+
+        //    K.setIdentity();
+        //    K(0, 0) = outputCalibration[0] * w;
+        //    K(1, 1) = outputCalibration[1] * h;
+        //    K(0, 2) = outputCalibration[2] * w - 0.5;
+        //    K(1, 2) = outputCalibration[3] * h - 0.5;
+        //}
+
+        //if (benchmarkSetting_fxfyfac != 0)
+        //{
+        //    K(0, 0) = fmax(benchmarkSetting_fxfyfac, (float)K(0, 0));
+        //    K(1, 1) = fmax(benchmarkSetting_fxfyfac, (float)K(1, 1));
+        //    passthrough = false; // cannot pass through when fx / fy have been overwritten.
+        //}
+
+
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++)
+            {
+                remapX[x + y * w] = x;
+                remapY[x + y * w] = y;
+            }
+
+        distortCoordinates(remapX, remapY, remapX, remapY, h*w);
+
+
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++)
+            {
+                // make rounding resistant.
+                float ix = remapX[x + y * w];
+                float iy = remapY[x + y * w];
+
+                if (ix == 0) ix = 0.001;
+                if (iy == 0) iy = 0.001;
+                if (ix == wOrg - 1) ix = wOrg - 1.001;
+                if (iy == hOrg - 1) ix = hOrg - 1.001;
+
+                if (ix > 0 && iy > 0 && ix < wOrg - 1 && iy < wOrg - 1)
+                {
+                    remapX[x + y * w] = ix;
+                    remapY[x + y * w] = iy;
+                }
+                else
+                {
+                    remapX[x + y * w] = -1;
+                    remapY[x + y * w] = -1;
+                }
+            }
+
+        valid = true;
+
+    }
+    //~UndistortPinholePlain();
+    void distortCoordinates(float* in_x, float* in_y, float* out_x, float* out_y, int n) const
+    {
+        // current camera parameters
+        float fx = parsOrg[0];
+        float fy = parsOrg[1];
+        float cx = parsOrg[2];
+        float cy = parsOrg[3];
+
+        float ofx = K(0, 0);
+        float ofy = K(1, 1);
+        float ocx = K(0, 2);
+        float ocy = K(1, 2);
+
+        for (int i = 0; i < n; i++)
+        {
+            float x = in_x[i];
+            float y = in_y[i];
+            float ix = (x - ocx) / ofx;
+            float iy = (y - ocy) / ofy;
+            ix = fx * ix + cx;
+            iy = fy * iy + cy;
+            out_x[i] = ix;
+            out_y[i] = iy;
+        }
+    }
+
+//private:
+//    float inputCalibration[8];
+};
+
+
 void MainWindow::on_pushButton_load_params_clicked()
 {
     QString filter1 = tr("OpenCV YAML (*.yaml *.yml)");
@@ -1115,7 +1253,9 @@ void MainWindow::on_pushButton_load_params_clicked()
         fs["FishEye"] >> fisheye;
         fs["Alpha"] >> alpha;
 
-        if (!ui->ffmpegSource->isChecked())
+        fs["CameraMatrix"] >> K;
+
+        if (!fisheye)
         {
             int w;
             int h;
@@ -1123,32 +1263,58 @@ void MainWindow::on_pushButton_load_params_clicked()
             fs["Width"] >> w;
             fs["Height"] >> h;
 
-            const auto& camera = mCameras[ui->comboBox_camera->currentIndex()];
+            undistorter.reset(new UndistortPinholePlain(
+                K.at<double>(0, 0),
+                K.at<double>(1, 1),
+                K.at<double>(0, 2),
+                K.at<double>(1, 2), w, h));
+            undistorter->loadPhotometricCalibration(
+                {},
+                {},
+                {});
 
-            bool matched = false;
-            for (int i = 0; i < camera.modes.size(); i++)
+            auto k = undistorter->getK();
+            printf("\nUsed Kamera Matrix:\n");
+            std::cout << k << "\n\n";
+            //cv::eigen2cv(k, K);
+            D = cv::Mat(8, 1, CV_64F, cv::Scalar::all(0.0F));
+        }
+        else
+        {
+            if (!ui->ffmpegSource->isChecked())
             {
-                const auto& mode = camera.modes[ui->comboBox_camera_res->currentIndex()];
+                int w;
+                int h;
 
-                if (mode.w == w && mode.h == h)
+                fs["Width"] >> w;
+                fs["Height"] >> h;
+
+                const auto& camera = mCameras[ui->comboBox_camera->currentIndex()];
+
+                bool matched = false;
+                for (int i = 0; i < camera.modes.size(); i++)
                 {
-                    matched = true;
-                    ui->comboBox_camera_res->setCurrentIndex(i);
-                    break;
+                    const auto& mode = camera.modes[ui->comboBox_camera_res->currentIndex()];
+
+                    if (mode.w == w && mode.h == h)
+                    {
+                        matched = true;
+                        ui->comboBox_camera_res->setCurrentIndex(i);
+                        break;
+                    }
+                }
+
+                if (!matched)
+                {
+                    QMessageBox::warning(this, tr("Warning"), tr("Current camera does not support the resolution\n"
+                        "%1x%2 loaded from the file:\n"
+                        "%3").arg(w).arg(h).arg(fileName));
+                    return;
                 }
             }
 
-            if (!matched)
-            {
-                QMessageBox::warning(this, tr("Warning"), tr("Current camera does not support the resolution\n"
-                    "%1x%2 loaded from the file:\n"
-                    "%3").arg(w).arg(h).arg(fileName));
-                return;
-            }
+            fs["DistCoeffs"] >> D;
         }
-
-        fs["CameraMatrix"] >> K;
-        fs["DistCoeffs"] >> D;
     }
 
     ui->checkBox_fisheye->setChecked(fisheye);
