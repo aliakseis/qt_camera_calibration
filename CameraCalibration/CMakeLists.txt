@@ -63,7 +63,7 @@ if (MSVC)
 endif (MSVC)
 
 
-add_executable(CameraCalibration WIN32 MACOSX_BUNDLE
+add_executable(CameraCalibration #WIN32 MACOSX_BUNDLE
     include/cameraundistort.h
     include/mainwindow.h
     include/qcameracalibrate.h
