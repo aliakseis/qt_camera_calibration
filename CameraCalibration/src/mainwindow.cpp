@@ -1293,12 +1293,13 @@ void MainWindow::on_pushButton_StartDSO_clicked()
         double alpha;
         bool fisheye;
         mCameraCalib->getCameraParams(imgSize, K, D, alpha, fisheye);
-        K.at<double>(0, 2) -= imgSize.width / 2; // cx
-        K.at<double>(1, 2) -= imgSize.height / 2; // cy
         w = imgSize.width;
         h = imgSize.height;
         cv::cv2eigen(K, k);
     }
+
+    printf("\nUsed Kamera Matrix:\n");
+    std::cout << k << "\n\n";
 
     setGlobalCalib(
         //(int)undistorter->getSize()[0],
