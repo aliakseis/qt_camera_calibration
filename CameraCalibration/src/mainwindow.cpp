@@ -1081,14 +1081,23 @@ public:
         float fy,
         float cx,
         float cy,
+        float k1,
+        float k2,
+        float r1,
+        float r2,
         int w_, int h_)
     {
-        parsOrg = dso::VecX(5);
+        parsOrg = dso::VecX(8);
 
         parsOrg[0] = fx;
         parsOrg[1] = fy;
         parsOrg[2] = cx;
         parsOrg[3] = cy;
+
+        parsOrg[4] = k1;
+        parsOrg[5] = k2;
+        parsOrg[6] = r1;
+        parsOrg[7] = r2;
 
         w = wOrg = w_;
         h = hOrg = h_;
@@ -1181,10 +1190,15 @@ public:
     void distortCoordinates(float* in_x, float* in_y, float* out_x, float* out_y, int n) const
     {
         // current camera parameters
+    // RADTAN
         float fx = parsOrg[0];
         float fy = parsOrg[1];
         float cx = parsOrg[2];
         float cy = parsOrg[3];
+        float k1 = parsOrg[4];
+        float k2 = parsOrg[5];
+        float r1 = parsOrg[6];
+        float r2 = parsOrg[7];
 
         float ofx = K(0, 0);
         float ofy = K(1, 1);
@@ -1195,12 +1209,23 @@ public:
         {
             float x = in_x[i];
             float y = in_y[i];
+
+            // RADTAN
             float ix = (x - ocx) / ofx;
             float iy = (y - ocy) / ofy;
-            ix = fx * ix + cx;
-            iy = fy * iy + cy;
-            out_x[i] = ix;
-            out_y[i] = iy;
+            float mx2_u = ix * ix;
+            float my2_u = iy * iy;
+            float mxy_u = ix * iy;
+            float rho2_u = mx2_u + my2_u;
+            float rad_dist_u = k1 * rho2_u + k2 * rho2_u * rho2_u;
+            float x_dist = ix + ix * rad_dist_u + 2.0 * r1 * mxy_u + r2 * (rho2_u + 2.0 * mx2_u);
+            float y_dist = iy + iy * rad_dist_u + 2.0 * r2 * mxy_u + r1 * (rho2_u + 2.0 * my2_u);
+            float ox = fx * x_dist + cx;
+            float oy = fy * y_dist + cy;
+
+
+            out_x[i] = ox;
+            out_y[i] = oy;
         }
     }
 
@@ -1255,39 +1280,48 @@ void MainWindow::on_pushButton_load_params_clicked()
 
         fs["CameraMatrix"] >> K;
 
+        int w;
+        int h;
+
+        fs["Width"] >> w;
+        fs["Height"] >> h;
+
+        fs["DistCoeffs"] >> D;
+
+        //*
         if (!fisheye)
         {
-            int w;
-            int h;
+            double k1 = D.ptr<double>(0)[0];
+            double k2 = D.ptr<double>(1)[0];
 
-            fs["Width"] >> w;
-            fs["Height"] >> h;
+            double p1 = D.ptr<double>(2)[0];
+            double p2 = D.ptr<double>(3)[0];
 
             undistorter.reset(new UndistortPinholePlain(
                 K.at<double>(0, 0),
                 K.at<double>(1, 1),
                 K.at<double>(0, 2),
-                K.at<double>(1, 2), w, h));
-            undistorter->loadPhotometricCalibration(
-                {},
-                {},
-                {});
+                K.at<double>(1, 2),
+                k1, k2, p1, p2,
+                w, h));
+            undistorter->loadPhotometricCalibration({}, {}, {});
 
             auto k = undistorter->getK();
             printf("\nUsed Kamera Matrix:\n");
             std::cout << k << "\n\n";
             //cv::eigen2cv(k, K);
-            D = cv::Mat(8, 1, CV_64F, cv::Scalar::all(0.0F));
+            //D = cv::Mat(8, 1, CV_64F, cv::Scalar::all(0.0F));
         }
         else
+        //*/
         {
             if (!ui->ffmpegSource->isChecked())
             {
-                int w;
-                int h;
+                //int w;
+                //int h;
 
-                fs["Width"] >> w;
-                fs["Height"] >> h;
+                //fs["Width"] >> w;
+                //fs["Height"] >> h;
 
                 const auto& camera = mCameras[ui->comboBox_camera->currentIndex()];
 
@@ -1309,11 +1343,11 @@ void MainWindow::on_pushButton_load_params_clicked()
                     QMessageBox::warning(this, tr("Warning"), tr("Current camera does not support the resolution\n"
                         "%1x%2 loaded from the file:\n"
                         "%3").arg(w).arg(h).arg(fileName));
-                    return;
+                    //return;
                 }
             }
 
-            fs["DistCoeffs"] >> D;
+            //fs["DistCoeffs"] >> D;
         }
     }
 
