@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1465</width>
+    <width>1726</width>
     <height>989</height>
    </rect>
   </property>
@@ -193,104 +193,96 @@
           <layout class="QHBoxLayout" name="horizontalLayout_6">
            <item>
             <widget class="QLabel" name="label_2">
-              <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>24</verstretch>
-                </sizepolicy>
-              </property>
-              <property name="minimumSize">
-                <size>
-                  <width>0</width>
-                  <height>24</height>
-                </size>
-              </property>
-              <property name="text">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>24</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="text">
               <string>URL</string>
              </property>
             </widget>
            </item>
-
-            <item>
-              <widget class="QLineEdit" name="lineEdit_URL">
-
-                <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>24</verstretch>
-                  </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                  <size>
-                    <width>0</width>
-                    <height>24</height>
-                  </size>
-                </property>
-
-              <property name="font">
-                <font>
-                  <pointsize>8</pointsize>
-                </font>
-              </property>
-              <property name="text">
-                <string></string>
-              </property>
-              <property name="alignment">
-                <set>Qt::AlignCenter</set>
-              </property>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_URL">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>24</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
             </widget>
-            </item>
-
-            <item>
-              <widget class="QLabel" name="label_3">
-                <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>24</verstretch>
-                  </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                  <size>
-                    <width>0</width>
-                    <height>24</height>
-                  </size>
-                </property>
-                <property name="text">
-                  <string>Input format</string>
-                </property>
-              </widget>
-            </item>
-
-            <item>
-              <widget class="QLineEdit" name="lineEdit_InputFormat">
-
-                <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>24</verstretch>
-                  </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                  <size>
-                    <width>0</width>
-                    <height>24</height>
-                  </size>
-                </property>
-
-                <property name="font">
-                  <font>
-                    <pointsize>8</pointsize>
-                  </font>
-                </property>
-                <property name="text">
-                  <string></string>
-                </property>
-                <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                </property>
-              </widget>
-            </item>
-
+           </item>
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>24</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Input format</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_InputFormat">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>24</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item row="1" column="0">
@@ -387,6 +379,12 @@ cameras. Useful if connection and USB camera</string>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="font">
                   <font>
                    <pointsize>8</pointsize>
@@ -407,6 +405,12 @@ cameras. Useful if connection and USB camera</string>
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="font">
                   <font>
@@ -429,6 +433,12 @@ cameras. Useful if connection and USB camera</string>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="font">
                   <font>
                    <pointsize>8</pointsize>
@@ -449,6 +459,12 @@ cameras. Useful if connection and USB camera</string>
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="font">
                   <font>
@@ -471,6 +487,12 @@ cameras. Useful if connection and USB camera</string>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="font">
                   <font>
                    <pointsize>8</pointsize>
@@ -491,6 +513,12 @@ cameras. Useful if connection and USB camera</string>
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="font">
                   <font>
@@ -513,6 +541,12 @@ cameras. Useful if connection and USB camera</string>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="font">
                   <font>
                    <pointsize>8</pointsize>
@@ -534,6 +568,12 @@ cameras. Useful if connection and USB camera</string>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="font">
                   <font>
                    <pointsize>8</pointsize>
@@ -554,6 +594,12 @@ cameras. Useful if connection and USB camera</string>
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="font">
                   <font>
@@ -598,15 +644,19 @@ cameras. Useful if connection and USB camera</string>
                <property name="spacing">
                 <number>1</number>
                </property>
-
                <item row="0" column="0">
-
                 <widget class="QLineEdit" name="lineEdit_k1">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="font">
                   <font>
@@ -621,27 +671,25 @@ cameras. Useful if connection and USB camera</string>
                  </property>
                 </widget>
                </item>
-
                <item row="0" column="1">
-             <widget class="QCheckBox" name="checkBox_fix_k1">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>Fix</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
+                <widget class="QCheckBox" name="checkBox_fix_k1">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::StrongFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string>Fix</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
                </item>
-
                <item row="0" column="2">
                 <widget class="QLineEdit" name="lineEdit_k2">
                  <property name="sizePolicy">
@@ -649,6 +697,12 @@ cameras. Useful if connection and USB camera</string>
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="font">
                   <font>
@@ -663,30 +717,25 @@ cameras. Useful if connection and USB camera</string>
                  </property>
                 </widget>
                </item>
-
-
-
                <item row="0" column="3">
-             <widget class="QCheckBox" name="checkBox_fix_k2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>Fix</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
+                <widget class="QCheckBox" name="checkBox_fix_k2">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::StrongFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string>Fix</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
                </item>
-
-
                <item row="0" column="4">
                 <widget class="QLineEdit" name="lineEdit_k3">
                  <property name="sizePolicy">
@@ -694,6 +743,12 @@ cameras. Useful if connection and USB camera</string>
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="font">
                   <font>
@@ -708,30 +763,25 @@ cameras. Useful if connection and USB camera</string>
                  </property>
                 </widget>
                </item>
-
-
-
                <item row="0" column="5">
-             <widget class="QCheckBox" name="checkBox_fix_k3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>Fix</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
+                <widget class="QCheckBox" name="checkBox_fix_k3">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::StrongFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string>Fix</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
                </item>
-
-
                <item row="1" column="0">
                 <widget class="QLineEdit" name="lineEdit_k4">
                  <property name="sizePolicy">
@@ -739,6 +789,12 @@ cameras. Useful if connection and USB camera</string>
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="font">
                   <font>
@@ -753,29 +809,25 @@ cameras. Useful if connection and USB camera</string>
                  </property>
                 </widget>
                </item>
-
-
                <item row="1" column="1">
-             <widget class="QCheckBox" name="checkBox_fix_k4">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>Fix</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
+                <widget class="QCheckBox" name="checkBox_fix_k4">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::StrongFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string>Fix</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
                </item>
-
-
                <item row="1" column="2">
                 <widget class="QLineEdit" name="lineEdit_k5">
                  <property name="sizePolicy">
@@ -783,6 +835,12 @@ cameras. Useful if connection and USB camera</string>
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="font">
                   <font>
@@ -797,29 +855,25 @@ cameras. Useful if connection and USB camera</string>
                  </property>
                 </widget>
                </item>
-
-
                <item row="1" column="3">
-             <widget class="QCheckBox" name="checkBox_fix_k5">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>Fix</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
+                <widget class="QCheckBox" name="checkBox_fix_k5">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::StrongFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string>Fix</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
                </item>
-
-
                <item row="1" column="4">
                 <widget class="QLineEdit" name="lineEdit_k6">
                  <property name="sizePolicy">
@@ -827,6 +881,12 @@ cameras. Useful if connection and USB camera</string>
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="font">
                   <font>
@@ -841,29 +901,25 @@ cameras. Useful if connection and USB camera</string>
                  </property>
                 </widget>
                </item>
-
-
                <item row="1" column="5">
-             <widget class="QCheckBox" name="checkBox_fix_k6">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>Fix</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
+                <widget class="QCheckBox" name="checkBox_fix_k6">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::StrongFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string>Fix</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
                </item>
-
-
                <item row="2" column="0">
                 <widget class="QLineEdit" name="lineEdit_p1">
                  <property name="sizePolicy">
@@ -871,6 +927,12 @@ cameras. Useful if connection and USB camera</string>
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="font">
                   <font>
@@ -893,6 +955,12 @@ cameras. Useful if connection and USB camera</string>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="font">
                   <font>
                    <pointsize>8</pointsize>
@@ -909,87 +977,157 @@ cameras. Useful if connection and USB camera</string>
               </layout>
              </widget>
             </item>
-
-
-            <item row="2" column="0" colspan="2">
+            <item row="0" column="2">
+             <widget class="QGroupBox" name="groupBox_par_size">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="title">
+               <string>Size</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_16">
+               <property name="leftMargin">
+                <number>3</number>
+               </property>
+               <property name="topMargin">
+                <number>3</number>
+               </property>
+               <property name="rightMargin">
+                <number>3</number>
+               </property>
+               <property name="bottomMargin">
+                <number>3</number>
+               </property>
+               <property name="spacing">
+                <number>1</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLineEdit" name="lineEdit_size_x">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>8</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>x</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLineEdit" name="lineEdit_size_y">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>96</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>8</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>y</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="2" column="0" colspan="3">
              <layout class="QHBoxLayout" name="horizontalLayout_41">
-
-            <item>
-             <widget class="QPushButton" name="pushButton_reset_params">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Reset</string>
-              </property>
-             </widget>
-            </item>
-
-            <item>
-             <widget class="QPushButton" name="pushButton_load_params">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Load</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_save_params">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Save</string>
-              </property>
-             </widget>
-            </item>
-
-
+              <item>
+               <widget class="QPushButton" name="pushButton_reset_params">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Reset</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_load_params">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Load</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_save_params">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Save</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
-
-
-
-            <item row="1" column="0" colspan="2">
+            <item row="1" column="0" colspan="3">
              <layout class="QHBoxLayout" name="horizontalLayout_3">
-
-
-            <item>
-             <widget class="QCheckBox" name="checkBox_fisheye">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>FishEye</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-
-
-
+              <item>
+               <widget class="QCheckBox" name="checkBox_fisheye">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="focusPolicy">
+                 <enum>Qt::StrongFocus</enum>
+                </property>
+                <property name="text">
+                 <string>FishEye</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
               <item>
                <widget class="QLabel" name="label">
                 <property name="text">
@@ -1014,10 +1152,6 @@ cameras. Useful if connection and USB camera</string>
                </widget>
               </item>
              </layout>
-
-
-
-
             </item>
            </layout>
           </widget>
@@ -1070,7 +1204,6 @@ cameras. Useful if connection and USB camera</string>
         <layout class="QGridLayout" name="gridLayout_9">
          <item row="0" column="0">
           <layout class="QVBoxLayout" name="verticalLayout_11">
-
            <item>
             <widget class="QPushButton" name="pushButton_calibrate">
              <property name="sizePolicy">
@@ -1113,7 +1246,6 @@ just calculated or loaded.</string>
              </property>
             </widget>
            </item>
-
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <property name="spacing">
@@ -1469,7 +1601,6 @@ are used to refine the parameters</string>
              </property>
             </spacer>
            </item>
-
            <item>
             <widget class="QPushButton" name="pushButton_StartDSO">
              <property name="sizePolicy">
@@ -1505,7 +1636,6 @@ are used to refine the parameters</string>
              </property>
             </widget>
            </item>
-
           </layout>
          </item>
          <item row="0" column="1">
@@ -1542,7 +1672,7 @@ are used to refine the parameters</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1465</width>
+     <width>1726</width>
      <height>21</height>
     </rect>
    </property>
