@@ -151,7 +151,7 @@ void FFmpegThread::run()
                     emit newImage(img);
                 }
 
-                //QThread::msleep(200);
+                msleep(20);
             }
         }
         av_packet_unref(&packet);
