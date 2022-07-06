@@ -537,7 +537,7 @@ void MainWindow::onNewCbImage(cv::Mat cbImage)
 {
     mCameraSceneCheckboard->setFgImage(cbImage);
 
-    ui->lineEdit_cb_count->setText( tr("%1").arg(mCameraCalib->getCbCount()) );
+    ui->lineEdit_cb_count->setText( QString::number(mCameraCalib->getCbCount()) );
 }
 
 void MainWindow::onCbDetected()
@@ -558,7 +558,7 @@ void MainWindow::onNewCameraParams(cv::Mat K, cv::Mat D, const cv::Size& imgSize
         mCalibInfo.setText( tr("Estimating new Camera parameters") );
     }
 
-    ui->lineEdit_calib_reproj_err->setText(tr("%1").arg(calibReprojErr));
+    ui->lineEdit_calib_reproj_err->setText(QString::number(calibReprojErr));
 
     if(calibReprojErr<=0.5 )
     {
@@ -830,11 +830,11 @@ void MainWindow::updateParamGUI( cv::Mat K, cv::Mat D, const cv::Size& size)
     double cy = K.ptr<double>(1)[2];
     double scale = K.ptr<double>(2)[2];
 
-    ui->lineEdit_fx->setText( tr("%1").arg(fx) );
-    ui->lineEdit_fy->setText( tr("%1").arg(fy) );
-    ui->lineEdit_cx->setText( tr("%1").arg(cx) );
-    ui->lineEdit_cy->setText( tr("%1").arg(cy) );
-    ui->lineEdit_scale->setText( tr("%1").arg(scale) );
+    ui->lineEdit_fx->setText( QString::number(fx) );
+    ui->lineEdit_fy->setText( QString::number(fy) );
+    ui->lineEdit_cx->setText( QString::number(cx) );
+    ui->lineEdit_cy->setText( QString::number(cy) );
+    ui->lineEdit_scale->setText( QString::number(scale) );
 
     double k1 = D.ptr<double>(0)[0];
     double k2 = D.ptr<double>(1)[0];
@@ -844,10 +844,10 @@ void MainWindow::updateParamGUI( cv::Mat K, cv::Mat D, const cv::Size& size)
         double k3 = D.ptr<double>(2)[0];
         double k4 = D.ptr<double>(3)[0];
 
-        ui->lineEdit_k1->setText( tr("%1").arg(k1) );
-        ui->lineEdit_k2->setText( tr("%1").arg(k2) );
-        ui->lineEdit_k3->setText( tr("%1").arg(k3) );
-        ui->lineEdit_k4->setText( tr("%1").arg(k4) );
+        ui->lineEdit_k1->setText( QString::number(k1) );
+        ui->lineEdit_k2->setText( QString::number(k2) );
+        ui->lineEdit_k3->setText( QString::number(k3) );
+        ui->lineEdit_k4->setText( QString::number(k4) );
 
         ui->lineEdit_k5->setVisible(false);
         ui->lineEdit_k6->setVisible(false);
@@ -864,14 +864,14 @@ void MainWindow::updateParamGUI( cv::Mat K, cv::Mat D, const cv::Size& size)
         double k5 = D.ptr<double>(6)[0];
         double k6 = D.ptr<double>(7)[0];
 
-        ui->lineEdit_k1->setText( tr("%1").arg(k1) );
-        ui->lineEdit_k2->setText( tr("%1").arg(k2) );
-        ui->lineEdit_p1->setText( tr("%1").arg(p1) );
-        ui->lineEdit_p2->setText( tr("%1").arg(p2) );
-        ui->lineEdit_k3->setText( tr("%1").arg(k3) );
-        ui->lineEdit_k4->setText( tr("%1").arg(k4) );
-        ui->lineEdit_k5->setText( tr("%1").arg(k5) );
-        ui->lineEdit_k6->setText( tr("%1").arg(k6) );
+        ui->lineEdit_k1->setText( QString::number(k1) );
+        ui->lineEdit_k2->setText( QString::number(k2) );
+        ui->lineEdit_p1->setText( QString::number(p1) );
+        ui->lineEdit_p2->setText( QString::number(p2) );
+        ui->lineEdit_k3->setText( QString::number(k3) );
+        ui->lineEdit_k4->setText( QString::number(k4) );
+        ui->lineEdit_k5->setText( QString::number(k5) );
+        ui->lineEdit_k6->setText( QString::number(k6) );
 
         ui->lineEdit_k5->setVisible(true);
         ui->lineEdit_k6->setVisible(true);
@@ -879,8 +879,8 @@ void MainWindow::updateParamGUI( cv::Mat K, cv::Mat D, const cv::Size& size)
         ui->lineEdit_p2->setVisible(true);
     }
 
-    ui->lineEdit_size_x->setText(tr("%1").arg(size.width));
-    ui->lineEdit_size_y->setText(tr("%1").arg(size.height));
+    ui->lineEdit_size_x->setText(QString::number(size.width));
+    ui->lineEdit_size_y->setText(QString::number(size.height));
 }
 
 void MainWindow::setNewCameraParams()
