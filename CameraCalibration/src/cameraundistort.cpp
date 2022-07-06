@@ -29,6 +29,15 @@ void CameraUndistort::getCameraParams( cv::Size& imgSize, bool& fishEye, cv::Mat
     alpha = mAlpha;
 }
 
+void CameraUndistort::setImageSize(int width, int height)
+{
+    mImgSize.width = width;
+    mImgSize.height = height;
+    mIntrinsic.ptr<double>(0)[2] = (double)mImgSize.width / 2.0;
+    mIntrinsic.ptr<double>(1)[2] = (double)mImgSize.height / 2.0;
+}
+
+
 bool CameraUndistort::setNewAlpha( double alpha )
 {
     return setCameraParams( mImgSize, mFishEye, mIntrinsic, mDistCoeffs, alpha );
@@ -177,13 +186,13 @@ cv::Mat CameraUndistort::undistort(cv::Mat& raw )
 
     if (raw.cols == mImgSize.width && raw.rows == mImgSize.height)
     {
-        src == raw;
+        src = raw;
     }
     else
     { 
         cv::resize(raw, src,
             mImgSize,
-            0, 0, cv::INTER_LANCZOS4);
+            0, 0, cv::INTER_LINEAR);
     }
 
     cv::Mat res;

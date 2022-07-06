@@ -28,6 +28,8 @@ public:
     void getCameraParams( cv::Size& imgSize, cv::Mat& K, cv::Mat& D, double& alpha, bool& fisheye);
     bool setCameraParams(cv::Size imgSize, cv::Mat& K, cv::Mat& D, double alpha, bool fishEye, int additionalFlags);
 
+    void setImageSize(int width, int height);
+
     void setNewAlpha( double alpha );
     void setFisheye( bool fisheye );
 

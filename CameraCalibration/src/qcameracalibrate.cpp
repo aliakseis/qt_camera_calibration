@@ -92,6 +92,14 @@ bool QCameraCalibrate::setCameraParams(cv::Size imgSize, cv::Mat &K, cv::Mat &D,
     return false;
 }
 
+void QCameraCalibrate::setImageSize(int width, int height)
+{
+    mImgSize.width = width;
+    mImgSize.height = height;
+
+    mUndistort->setImageSize(width, height);
+}
+
 void QCameraCalibrate::addCorners( vector<cv::Point2f>& img_corners )
 {
     QMutexLocker locker(&mMutex);
@@ -159,6 +167,8 @@ void QCameraCalibrate::addCorners( vector<cv::Point2f>& img_corners )
                 mCalibFlags |= cv::CALIB_USE_INTRINSIC_GUESS;
             }
             // <<<<< Calibration flags
+
+            std::cout << "K before cv::calibrateCamera:\n" << K << '\n';
 
             mReprojErr = cv::calibrateCamera( mObjCornersVec, mImgCornersVec, mImgSize,
                                               K, D, rvecs, tvecs, mCalibFlags );

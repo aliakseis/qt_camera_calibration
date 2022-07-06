@@ -145,6 +145,8 @@ private:
     std::unique_ptr<dso::FullSystem> fullSystem;
     std::unique_ptr<dso::Undistort> undistorter;
     int frameID = 0;
+
+    bool mParametersReset = false;
 };
 
 #endif // MAINWINDOW_H

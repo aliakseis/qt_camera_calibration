@@ -76,6 +76,8 @@ MainWindow::MainWindow(QWidget *parent) :
     mCameraCalib(nullptr),
     mCbDetectedSnd(nullptr)
 {
+    qRegisterMetaType<cv::Size>("cv::Size");
+
     setWindowIcon(QIcon(":/icon.ico"));
 
     ui->setupUi(this);
@@ -396,6 +398,16 @@ void MainWindow::onNewImage( cv::Mat frame )
 
     if( ui->pushButton_calibrate->isChecked() && frmCnt%((int)mSrcFps) == 0 )
     {
+        if (mParametersReset)
+        {
+            mParametersReset = false;
+
+            ui->lineEdit_size_x->setText(QString::number(mSrcWidth));
+            ui->lineEdit_size_y->setText(QString::number(mSrcHeight));
+
+            mCameraCalib->setImageSize(mSrcWidth, mSrcHeight);
+        }
+
         auto* elab = new QChessboardElab( this, frame, mCbSize, mCbSizeMm, mCameraCalib );
         mElabPool.tryStart(elab);
     }
@@ -419,7 +431,7 @@ void MainWindow::onNewImage( cv::Mat frame )
         {
             cv::resize(imgGray, imgGray,
                 { undistorter->getOriginalSize()[0], undistorter->getOriginalSize()[1] },
-                0, 0, cv::INTER_LANCZOS4);
+                0, 0, cv::INTER_LINEAR);
         }
 
         dso::MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
@@ -1052,6 +1064,8 @@ void MainWindow::on_pushButton_calibrate_clicked(bool checked)
 
 void MainWindow::on_pushButton_reset_params_clicked()
 {
+    mParametersReset = true;
+
     updateCbParams();
 
     if (mCameraCalib)
@@ -1314,7 +1328,7 @@ void MainWindow::on_pushButton_load_params_clicked()
 
         fs["DistCoeffs"] >> D;
 
-        //*
+        /*
         if (!fisheye)
         {
             double k1 = D.ptr<double>(0)[0];

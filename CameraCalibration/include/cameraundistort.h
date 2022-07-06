@@ -14,6 +14,8 @@ public:
     bool setCameraParams( cv::Size imgSize, bool fishEye, cv::Mat intr, cv::Mat dist, double alpha );
     void getCameraParams( cv::Size& imgSize, bool& fishEye, cv::Mat& intr, cv::Mat& dist, double& alpha );
 
+    void setImageSize(int width, int height);
+
     bool loadCameraParams( std::string fileName );
     bool saveCameraParams( std::string fileName );
 
