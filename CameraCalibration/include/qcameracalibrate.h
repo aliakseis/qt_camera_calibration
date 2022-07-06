@@ -35,7 +35,7 @@ protected:
     void create3DChessboardCorners(cv::Size boardSize, double squareSize);
 
 signals:
-    void newCameraParams(cv::Mat K, cv::Mat D, bool refined, double reprojErr );
+    void newCameraParams(cv::Mat K, cv::Mat D, const cv::Size& imgSize, bool refined, double reprojErr );
 
 public slots:
     void addCorners(std::vector<cv::Point2f> &img_corners );

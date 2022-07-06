@@ -53,14 +53,14 @@ public slots:
     void onNewImage(cv::Mat frame);
     void onNewCbImage(cv::Mat cbImage);
     void onCbDetected();
-    void onNewCameraParams(cv::Mat K, cv::Mat D, bool refining, double calibReprojErr );
+    void onNewCameraParams(cv::Mat K, cv::Mat D, const cv::Size& imgSize, bool refining, double calibReprojErr );
 
 protected slots:
     void onCameraConnected();
     void onCameraDisconnected(bool ok);
     void onProcessReadyRead();
 
-    void updateParamGUI(cv::Mat K, cv::Mat D);
+    void updateParamGUI(cv::Mat K, cv::Mat D, const cv::Size& size);
     void updateCbParams();
     void setNewCameraParams();
 

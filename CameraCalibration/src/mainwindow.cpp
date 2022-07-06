@@ -547,7 +547,7 @@ void MainWindow::onCbDetected()
     mCbDetectedSnd->play();
 }
 
-void MainWindow::onNewCameraParams(cv::Mat K, cv::Mat D, bool refining, double calibReprojErr)
+void MainWindow::onNewCameraParams(cv::Mat K, cv::Mat D, const cv::Size& imgSize, bool refining, double calibReprojErr)
 {
     if( refining )
     {
@@ -575,7 +575,7 @@ void MainWindow::onNewCameraParams(cv::Mat K, cv::Mat D, bool refining, double c
 
     if( !K.empty() && !D.empty() )
     {
-        updateParamGUI( K, D );
+        updateParamGUI( K, D, imgSize);
     }
 }
 
@@ -822,7 +822,7 @@ void MainWindow::updateCbParams()
     mCbSizeMm = ui->lineEdit_cb_mm->text().toFloat();
 }
 
-void MainWindow::updateParamGUI( cv::Mat K, cv::Mat D )
+void MainWindow::updateParamGUI( cv::Mat K, cv::Mat D, const cv::Size& size)
 {
     double fx = K.ptr<double>(0)[0];
     double fy = K.ptr<double>(1)[1];
@@ -878,6 +878,9 @@ void MainWindow::updateParamGUI( cv::Mat K, cv::Mat D )
         ui->lineEdit_p1->setVisible(true);
         ui->lineEdit_p2->setVisible(true);
     }
+
+    ui->lineEdit_size_x->setText(tr("%1").arg(size.width));
+    ui->lineEdit_size_y->setText(tr("%1").arg(size.height));
 }
 
 void MainWindow::setNewCameraParams()
@@ -1068,7 +1071,7 @@ void MainWindow::on_pushButton_reset_params_clicked()
     ui->checkBox_fisheye->setChecked(fisheye);
     ui->horizontalSlider_alpha->setValue( static_cast<int>( alpha*ui->horizontalSlider_alpha->maximum() ) );
 
-    updateParamGUI(K,D);
+    updateParamGUI(K, D, imgSize);
 }
 
 
@@ -1258,6 +1261,8 @@ void MainWindow::on_pushButton_load_params_clicked()
     cv::Mat K;
     cv::Mat D;
 
+    cv::Size imgSize;
+
     if (forDso)
     { 
         undistorter.reset(dso::Undistort::getUndistorterForFile(QFile::encodeName(fileName).constData(), {}, {}));
@@ -1266,6 +1271,8 @@ void MainWindow::on_pushButton_load_params_clicked()
         std::cout << k << "\n\n";
         cv::eigen2cv(k, K);
         D = cv::Mat(8, 1, CV_64F, cv::Scalar::all(0.0F));
+        imgSize.width = undistorter->getSize()[0];
+        imgSize.height = undistorter->getSize()[1];
     }
     else
     {
@@ -1280,11 +1287,11 @@ void MainWindow::on_pushButton_load_params_clicked()
 
         fs["CameraMatrix"] >> K;
 
-        int w;
-        int h;
+        //int w;
+        //int h;
 
-        fs["Width"] >> w;
-        fs["Height"] >> h;
+        fs["Width"] >> imgSize.width;
+        fs["Height"] >> imgSize.height;
 
         fs["DistCoeffs"] >> D;
 
@@ -1303,7 +1310,7 @@ void MainWindow::on_pushButton_load_params_clicked()
                 K.at<double>(0, 2),
                 K.at<double>(1, 2),
                 k1, k2, p1, p2,
-                w, h));
+                imgSize.width, imgSize.height));
             undistorter->loadPhotometricCalibration({}, {}, {});
 
             auto k = undistorter->getK();
@@ -1330,7 +1337,7 @@ void MainWindow::on_pushButton_load_params_clicked()
                 {
                     const auto& mode = camera.modes[ui->comboBox_camera_res->currentIndex()];
 
-                    if (mode.w == w && mode.h == h)
+                    if (mode.w == imgSize.width && mode.h == imgSize.height)
                     {
                         matched = true;
                         ui->comboBox_camera_res->setCurrentIndex(i);
@@ -1342,7 +1349,7 @@ void MainWindow::on_pushButton_load_params_clicked()
                 {
                     QMessageBox::warning(this, tr("Warning"), tr("Current camera does not support the resolution\n"
                         "%1x%2 loaded from the file:\n"
-                        "%3").arg(w).arg(h).arg(fileName));
+                        "%3").arg(imgSize.width).arg(imgSize.height).arg(fileName));
                     //return;
                 }
             }
@@ -1355,7 +1362,7 @@ void MainWindow::on_pushButton_load_params_clicked()
 
     ui->horizontalSlider_alpha->setValue( static_cast<int>(alpha*ui->horizontalSlider_alpha->maximum()) );
 
-    updateParamGUI(K,D);
+    updateParamGUI(K, D, imgSize);
 
     setNewCameraParams();
 }
@@ -1437,7 +1444,7 @@ void MainWindow::on_checkBox_fisheye_clicked(bool checked)
         double alpha;
 
         mCameraCalib->getCameraParams(imgSize, K, D, alpha, fisheye);
-        updateParamGUI(K, D);
+        updateParamGUI(K, D, imgSize);
     }
 }
 

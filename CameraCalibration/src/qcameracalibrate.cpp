@@ -166,7 +166,7 @@ void QCameraCalibrate::addCorners( vector<cv::Point2f>& img_corners )
             mUndistort->setCameraParams( mImgSize, fisheye, K, D, alpha );
         }
 
-        emit newCameraParams( K, D, mRefined, mReprojErr );
+        emit newCameraParams( K, D, imgSize, mRefined, mReprojErr );
 
         mCoeffReady = true;
     }
