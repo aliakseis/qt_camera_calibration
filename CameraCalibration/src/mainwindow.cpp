@@ -1161,27 +1161,32 @@ public:
         //}
 
 
-        for (int y = 0; y < h; y++)
+        for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++)
             {
                 remapX[x + y * w] = x;
                 remapY[x + y * w] = y;
             }
+}
 
         distortCoordinates(remapX, remapY, remapX, remapY, h*w);
 
 
-        for (int y = 0; y < h; y++)
+        for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++)
             {
                 // make rounding resistant.
                 float ix = remapX[x + y * w];
                 float iy = remapY[x + y * w];
 
-                if (ix == 0) ix = 0.001;
-                if (iy == 0) iy = 0.001;
-                if (ix == wOrg - 1) ix = wOrg - 1.001;
-                if (iy == hOrg - 1) ix = hOrg - 1.001;
+                if (ix == 0) { ix = 0.001;
+}
+                if (iy == 0) { iy = 0.001;
+}
+                if (ix == wOrg - 1) { ix = wOrg - 1.001;
+}
+                if (iy == hOrg - 1) { ix = hOrg - 1.001;
+}
 
                 if (ix > 0 && iy > 0 && ix < wOrg - 1 && iy < wOrg - 1)
                 {
@@ -1194,12 +1199,13 @@ public:
                     remapY[x + y * w] = -1;
                 }
             }
+}
 
         valid = true;
 
     }
     //~UndistortPinholePlain();
-    void distortCoordinates(float* in_x, float* in_y, float* out_x, float* out_y, int n) const
+    void distortCoordinates(float* in_x, float* in_y, float* out_x, float* out_y, int n) const override
     {
         // current camera parameters
     // RADTAN
@@ -1313,13 +1319,13 @@ void MainWindow::on_pushButton_load_params_clicked()
             double p1 = D.ptr<double>(2)[0];
             double p2 = D.ptr<double>(3)[0];
 
-            undistorter.reset(new UndistortPinholePlain(
+            undistorter = std::make_unique<UndistortPinholePlain>(
                 K.at<double>(0, 0),
                 K.at<double>(1, 1),
                 K.at<double>(0, 2),
                 K.at<double>(1, 2),
                 k1, k2, p1, p2,
-                imgSize.width, imgSize.height));
+                imgSize.width, imgSize.height);
             undistorter->loadPhotometricCalibration({}, {}, {});
 
             auto k = undistorter->getK();
