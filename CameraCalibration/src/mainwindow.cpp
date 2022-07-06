@@ -620,6 +620,8 @@ void MainWindow::on_pushButton_camera_connect_disconnect_clicked(bool checked)
 
         mCameraCalib = new QCameraCalibrate( cv::Size(mSrcWidth, mSrcHeight), mCbSize, mCbSizeMm, fisheye, maxCount );
 
+        setNewCameraParams();
+
         connect( mCameraCalib, &QCameraCalibrate::newCameraParams,
                  this, &MainWindow::onNewCameraParams );
 
@@ -635,7 +637,6 @@ void MainWindow::on_pushButton_camera_connect_disconnect_clicked(bool checked)
 
         updateParamGUI(K,D);
         */
-        setNewCameraParams();
 
         if (cameraStarted)
         {
@@ -948,7 +949,10 @@ void MainWindow::setNewCameraParams()
         additionalFlags |= cv::CALIB_FIX_K6;
     }
 
-    mCameraCalib->setCameraParams( cv::Size(mSrcWidth,mSrcHeight), K, D, alpha, fisheye, additionalFlags);
+    const int width = ui->lineEdit_size_x->text().toInt();
+    const int height = ui->lineEdit_size_y->text().toInt();
+
+    mCameraCalib->setCameraParams( cv::Size(width, height), K, D, alpha, fisheye, additionalFlags);
 }
 
 void MainWindow::on_lineEdit_fx_editingFinished()

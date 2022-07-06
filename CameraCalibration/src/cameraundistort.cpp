@@ -171,10 +171,23 @@ cv::Mat CameraUndistort::undistort(cv::Mat& raw )
 {
     if( !mReady || mRemap1.empty() || mRemap2.empty() ) {
         return {};
-}
+    }
+
+    cv::Mat src;
+
+    if (raw.cols == mImgSize.width && raw.rows == mImgSize.height)
+    {
+        src == raw;
+    }
+    else
+    { 
+        cv::resize(raw, src,
+            mImgSize,
+            0, 0, cv::INTER_LANCZOS4);
+    }
 
     cv::Mat res;
-    cv::remap(raw, res, mRemap1, mRemap2, cv::INTER_LINEAR); // Apply undistorsion mappings
+    cv::remap(src, res, mRemap1, mRemap2, cv::INTER_LINEAR); // Apply undistorsion mappings
 
     return res;
 }
