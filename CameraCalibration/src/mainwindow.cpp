@@ -124,6 +124,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lineEdit_cb_mm->setValidator(new QIntValidator(1, 999, this));
     ui->lineEdit_cb_max_count->setValidator(new QIntValidator(10, 99, this));
 
+    ui->lineEdit_size_x->setValidator(new QIntValidator(10, 9999, this));
+    ui->lineEdit_size_y->setValidator(new QIntValidator(10, 9999, this));
+
     auto validationErrorLam = [this] {
         QMessageBox::warning(this, tr("Validation error"), tr("Please provide a correct value."));
     };
@@ -132,7 +135,9 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->lineEdit_cb_cols,
             ui->lineEdit_cb_rows,
             ui->lineEdit_cb_mm,
-            ui->lineEdit_cb_max_count
+            ui->lineEdit_cb_max_count,
+            ui->lineEdit_size_x,
+            ui->lineEdit_size_y
         })
     {
         connect(edit, &CustomLineEdit::validationError, validationErrorLam);

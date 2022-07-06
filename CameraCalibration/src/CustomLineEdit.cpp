@@ -9,7 +9,7 @@ void CustomLineEdit::focusInEvent(QFocusEvent *event)
 void CustomLineEdit::focusOutEvent(QFocusEvent *event)
 {
     QLineEdit::focusOutEvent(event);
-    if (!hasAcceptableInput())
+    if (text() != m_originalValue && !hasAcceptableInput())
     {
         setText(m_originalValue);
         setFocus();
