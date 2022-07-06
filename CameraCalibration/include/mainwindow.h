@@ -97,7 +97,7 @@ private slots:
 
     void on_checkBox_fisheye_clicked(bool checked);
 
-    void on_pushButton_StartDSO_clicked();
+    void on_pushButton_StartDSO_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;

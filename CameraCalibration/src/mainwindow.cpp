@@ -502,18 +502,18 @@ void MainWindow::onNewImage( cv::Mat frame )
     {
         if (setting_fullResetRequested)
         {
-            std::vector<IOWrap::Output3DWrapper*> wraps = fullSystem->outputWrapper;
+            auto wraps = fullSystem->outputWrapper;
             //delete fullSystem;
             fullSystem.reset();
-            for (IOWrap::Output3DWrapper* ow : wraps) {
+            for (auto ow : wraps) {
                 ow->reset();
-}
+            }
             fullSystem = std::make_unique<FullSystem>();
             fullSystem->linearizeOperation = false;
             fullSystem->outputWrapper = wraps;
             if (undistorter->photometricUndist != nullptr) {
                 fullSystem->setGammaFunction(undistorter->photometricUndist->getG());
-}
+            }
             setting_fullResetRequested = false;
         }
 
@@ -1167,7 +1167,7 @@ public:
                 remapX[x + y * w] = x;
                 remapY[x + y * w] = y;
             }
-}
+        }
 
         distortCoordinates(remapX, remapY, remapX, remapY, h*w);
 
@@ -1179,14 +1179,18 @@ public:
                 float ix = remapX[x + y * w];
                 float iy = remapY[x + y * w];
 
-                if (ix == 0) { ix = 0.001;
-}
-                if (iy == 0) { iy = 0.001;
-}
-                if (ix == wOrg - 1) { ix = wOrg - 1.001;
-}
-                if (iy == hOrg - 1) { ix = hOrg - 1.001;
-}
+                if (ix == 0) { 
+                    ix = 0.001;
+                }
+                if (iy == 0) { 
+                    iy = 0.001;
+                }
+                if (ix == wOrg - 1) { 
+                    ix = wOrg - 1.001;
+                }
+                if (iy == hOrg - 1) { 
+                    ix = hOrg - 1.001;
+                }
 
                 if (ix > 0 && iy > 0 && ix < wOrg - 1 && iy < wOrg - 1)
                 {
@@ -1199,7 +1203,7 @@ public:
                     remapY[x + y * w] = -1;
                 }
             }
-}
+        }
 
         valid = true;
 
@@ -1463,7 +1467,7 @@ void MainWindow::on_checkBox_fisheye_clicked(bool checked)
     }
 }
 
-void MainWindow::on_pushButton_StartDSO_clicked()
+void MainWindow::on_pushButton_StartDSO_clicked(bool checked)
 {
 
     //mCbDetectedSnd->play();
@@ -1471,20 +1475,34 @@ void MainWindow::on_pushButton_StartDSO_clicked()
     //if (!undistorter)
     //    return;
 
-    if (!undistorter && !ui->pushButton_camera_connect_disconnect->isChecked())
+    if (checked)
     {
-        mDsoInitializationPostponed = true;
-        return;
-    }
+        if (!undistorter && !ui->pushButton_camera_connect_disconnect->isChecked())
+        {
+            mDsoInitializationPostponed = true;
+            return;
+        }
 
-    startDso();
+        startDso();
+    }
+    else
+    {
+        auto wraps = fullSystem->outputWrapper;
+        fullSystem.reset();
+        for (auto ow : wraps) {
+            delete ow;
+        }
+
+        mDsoInitialized = false;
+        mDsoInitializationPostponed = false;
+    }
 }
 
  void MainWindow::startDso()
  {
     if (mDsoInitialized) {
         return;
-}
+    }
 
 
     using namespace dso;
@@ -1543,7 +1561,7 @@ void MainWindow::on_pushButton_StartDSO_clicked()
 
     if (!disableAllDisplay) {
         fullSystem->outputWrapper.push_back(new IOWrap::PangolinDSOViewer(w, h));
-}
+    }
             //(int)undistorter->getSize()[0],
             //(int)undistorter->getSize()[1]));
 
@@ -1554,7 +1572,7 @@ void MainWindow::on_pushButton_StartDSO_clicked()
 
     if (undistorter && undistorter->photometricUndist != nullptr) {
         fullSystem->setGammaFunction(undistorter->photometricUndist->getG());
-}
+    }
 
 
 
