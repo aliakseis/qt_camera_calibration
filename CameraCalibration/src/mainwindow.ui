@@ -1092,7 +1092,7 @@ cameras. Useful if connection and USB camera</string>
               <item>
                <widget class="QPushButton" name="pushButton_save_params">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">

@@ -349,7 +349,7 @@ void MainWindow::onCameraDisconnected(bool ok)
     ui->comboBox_camera_res->setEnabled(true);
 
     ui->pushButton_load_params->setEnabled(true);
-    ui->pushButton_save_params->setEnabled(false);
+    //ui->pushButton_save_params->setEnabled(false);
 
     mGstProcessOutputMutex.lock();
     QString output = mGstProcessOutput;
@@ -668,7 +668,7 @@ void MainWindow::on_pushButton_camera_connect_disconnect_clicked(bool checked)
             ui->comboBox_camera_res->setEnabled(false);
 
             ui->pushButton_load_params->setEnabled(false);
-            ui->pushButton_save_params->setEnabled(true);
+            //ui->pushButton_save_params->setEnabled(true);
         }
         else
         {
@@ -684,7 +684,7 @@ void MainWindow::on_pushButton_camera_connect_disconnect_clicked(bool checked)
             ui->comboBox_camera_res->setEnabled(true);
 
             ui->pushButton_load_params->setEnabled(true);
-            ui->pushButton_save_params->setEnabled(false);
+            //ui->pushButton_save_params->setEnabled(false);
         }
 
         if (mDsoInitializationPostponed)
@@ -706,7 +706,7 @@ void MainWindow::on_pushButton_camera_connect_disconnect_clicked(bool checked)
         ui->comboBox_camera_res->setEnabled(true);
 
         ui->pushButton_load_params->setEnabled(true);
-        ui->pushButton_save_params->setEnabled(false);
+        //ui->pushButton_save_params->setEnabled(false);
     }
 }
 
