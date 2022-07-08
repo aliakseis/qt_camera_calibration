@@ -76,6 +76,8 @@ bool QCameraCalibrate::setCameraParams(cv::Size imgSize, cv::Mat &K, cv::Mat &D,
 
     mImgSize = std::move(imgSize);
 
+    mAdditionalFlags = additionalFlags;
+
     if( mUndistort->setCameraParams( mImgSize, fishEye, K, D, alpha ) )
     {
         mRefined=true;      // Initial guess is set, so we want to refine the calibration values
@@ -86,8 +88,6 @@ bool QCameraCalibrate::setCameraParams(cv::Size imgSize, cv::Mat &K, cv::Mat &D,
 
     mRefined = false;
     mCoeffReady = false;
-
-    mAdditionalFlags = additionalFlags;
 
     return false;
 }
