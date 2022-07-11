@@ -90,10 +90,9 @@ bool CameraUndistort::setCameraParams(cv::Size imgSize, bool fishEye, cv::Mat in
 
         cv::initUndistortRectifyMap( mIntrinsic, mDistCoeffs, cv::Matx33f::eye(),
                                      optimalK, mImgSize, CV_16SC2, mRemap1, mRemap2  );
-    }
 
-    cv::medianBlur(mRemap1, mRemap1, 3);
-    cv::medianBlur(mRemap2, mRemap2, 3);
+        cv::medianBlur(mRemap1, mRemap1, 3);
+    }
 
     mReady = true;
     return true;
