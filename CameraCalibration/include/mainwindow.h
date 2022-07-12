@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QLabel>
+#include <QProgressBar>
 #include <QProcess>
 #include <QThreadPool>
 #include <QSound>
@@ -104,6 +105,8 @@ private:
 
     QLabel mOpenCvVer;
     QLabel mCalibInfo;
+
+    QProgressBar mCamBuffer;
 
     QProcess mGstProcess;
 

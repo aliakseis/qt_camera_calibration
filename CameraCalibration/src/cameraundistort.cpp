@@ -59,7 +59,7 @@ bool CameraUndistort::setCameraParams(cv::Size imgSize, bool fishEye, cv::Mat in
 
     if( mIntrinsic.empty() || mDistCoeffs.empty() ) {
         return false;    
-}
+    }
 
     if( mFishEye )
     {
@@ -91,7 +91,10 @@ bool CameraUndistort::setCameraParams(cv::Size imgSize, bool fishEye, cv::Mat in
         cv::initUndistortRectifyMap( mIntrinsic, mDistCoeffs, cv::Matx33f::eye(),
                                      optimalK, mImgSize, CV_16SC2, mRemap1, mRemap2  );
 
-        cv::medianBlur(mRemap1, mRemap1, 3);
+        if (!mRemap1.empty())
+        {
+            cv::medianBlur(mRemap1, mRemap1, 3);
+        }
     }
 
     mReady = true;

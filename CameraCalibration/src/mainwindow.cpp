@@ -103,6 +103,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->statusBar->addWidget( &mCalibInfo );
     // <<<<< Calibration INFO
 
+    mCamBuffer.setFormat("Camera buffer: %p%");
+    ui->statusBar->addWidget(&mCamBuffer);
+
     on_pushButton_update_camera_list_clicked();
 
     // >>>>> Stream rendering
@@ -504,7 +507,7 @@ void MainWindow::onNewImage( cv::Mat frame )
 
         int percInt = static_cast<int>(perc*100);
 
-        ui->progressBar_camBuffer->setValue(percInt);
+        mCamBuffer.setValue(percInt);
     }
 
     // DSO stuff
