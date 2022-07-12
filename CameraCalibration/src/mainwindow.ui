@@ -1156,16 +1156,6 @@ cameras. Useful if connection and USB camera</string>
            </layout>
           </widget>
          </item>
-         <!--item row="7" column="0">
-          <widget class="QProgressBar" name="progressBar_camBuffer">
-           <property name="value">
-            <number>0</number>
-           </property>
-           <property name="format">
-            <string>Camera buffer: %p%</string>
-           </property>
-          </widget>
-         </item-->
          <item row="4" column="0">
           <widget class="QRadioButton" name="ffmpegSource">
            <property name="text">
@@ -1174,9 +1164,15 @@ cameras. Useful if connection and USB camera</string>
           </widget>
          </item>
          <item row="3" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout_9">
+          <layout class="QHBoxLayout" name="verticalLayout_9">
            <item>
             <widget class="QLabel" name="label_8">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Resolution and FPS</string>
              </property>
