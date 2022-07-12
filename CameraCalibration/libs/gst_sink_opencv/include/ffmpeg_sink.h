@@ -47,7 +47,7 @@ private:
     AVCodecContext* m_codecContext{};
     int m_streamNumber;
 
-    std::atomic_int m_queueSize;
+    std::atomic_int m_queueSize{0};
     QMutex m_mtxQueueSize;
     QWaitCondition m_cvQueueSize;
 };
