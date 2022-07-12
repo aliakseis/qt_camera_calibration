@@ -93,9 +93,12 @@ MainWindow::MainWindow(QWidget *parent) :
     // >>>>> OpenCV version
     QString ocvVers = updateOpenCvVer();
     mOpenCvVer.setText( ocvVers );
+    mOpenCvVer.setFrameStyle(QFrame::Panel | QFrame::Sunken);
     ui->statusBar->addPermanentWidget( &mOpenCvVer );
     // <<<<< OpenCV version
 
+    mCalibInfo.setText(tr("Ready"));
+    mCalibInfo.setFrameStyle(QFrame::Panel | QFrame::Sunken);
     // >>>>> Calibration INFO
     ui->statusBar->addWidget( &mCalibInfo );
     // <<<<< Calibration INFO
