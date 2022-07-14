@@ -64,6 +64,33 @@ const auto SETTING_FFMPEG_URL = QStringLiteral("FFmpegUrl");
 const auto SETTING_FFMPEG_INPUT_FORMAT = QStringLiteral("FFmpegInputFormat");
 
 
+
+const auto SETTING_DESIRED_IMMATURE_DENSITY = QStringLiteral("setting_desiredImmatureDensity");
+const auto SETTING_DESIRED_POINT_DENSITY = QStringLiteral("setting_desiredPointDensity");
+const auto SETTING_MIN_FRAMES = QStringLiteral("setting_minFrames");
+const auto SETTING_MAX_FRAMES = QStringLiteral("setting_maxFrames");
+const auto SETTING_MAX_OPT_ITERATIONS = QStringLiteral("setting_maxOptIterations");
+const auto SETTING_MIN_OPT_ITERATIONS = QStringLiteral("setting_minOptIterations");
+
+/*
+
+setting_desiredImmatureDensity
+setting_desiredPointDensity
+setting_minFrames
+setting_maxFrames
+setting_maxOptIterations
+setting_minOptIterations
+
+SETTING_DESIRED_IMMATURE_DENSITY
+SETTING_DESIRED_POINT_DENSITY
+SETTING_MIN_FRAMES
+SETTING_MAX_FRAMES
+SETTING_MAX_OPT_ITERATIONS
+SETTING_MIN_OPT_ITERATIONS
+
+*/
+
+
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -135,6 +162,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lineEdit_size_x->setValidator(new QIntValidator(10, 9999, this));
     ui->lineEdit_size_y->setValidator(new QIntValidator(10, 9999, this));
 
+    ui->lineEdit_setting_desiredImmatureDensity->setValidator(new QIntValidator(10, 9999, this));
+    ui->lineEdit_setting_desiredPointDensity->setValidator(new QIntValidator(10, 9999, this));
+    ui->lineEdit_setting_minFrames->setValidator(new QIntValidator(1, 99, this));
+    ui->lineEdit_setting_maxFrames->setValidator(new QIntValidator(1, 99, this));
+    ui->lineEdit_setting_maxOptIterations->setValidator(new QIntValidator(1, 99, this));
+    ui->lineEdit_setting_minOptIterations->setValidator(new QIntValidator(1, 99, this));
+
+
     auto validationErrorLam = [this] {
         QMessageBox::warning(this, tr("Validation error"), tr("Please provide a correct value."));
     };
@@ -145,7 +180,13 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->lineEdit_cb_mm,
             ui->lineEdit_cb_max_count,
             ui->lineEdit_size_x,
-            ui->lineEdit_size_y
+            ui->lineEdit_size_y,
+            ui->lineEdit_setting_desiredImmatureDensity,
+            ui->lineEdit_setting_desiredPointDensity,
+            ui->lineEdit_setting_minFrames,
+            ui->lineEdit_setting_maxFrames,
+            ui->lineEdit_setting_maxOptIterations,
+            ui->lineEdit_setting_minOptIterations
         })
     {
         connect(edit, &CustomLineEdit::validationError, validationErrorLam);
@@ -166,6 +207,22 @@ MainWindow::MainWindow(QWidget *parent) :
         ? ui->ffmpegSource : ui->gstreamerSource)->setChecked(true);
 
 
+    // DSO
+
+    //setting_desiredImmatureDensity = 1000;
+    //setting_desiredPointDensity = 1200;
+    //setting_minFrames = 5;
+    //setting_maxFrames = 7;
+    //setting_maxOptIterations = 4;
+    //setting_minOptIterations = 1;
+
+    ui->lineEdit_setting_desiredImmatureDensity->setText(settings.value(SETTING_DESIRED_IMMATURE_DENSITY, 1000).toString());
+    ui->lineEdit_setting_desiredPointDensity->setText(settings.value(SETTING_DESIRED_POINT_DENSITY, 1200).toString());
+    ui->lineEdit_setting_minFrames->setText(settings.value(SETTING_MIN_FRAMES, 5).toString());
+    ui->lineEdit_setting_maxFrames->setText(settings.value(SETTING_MAX_FRAMES, 7).toString());
+    ui->lineEdit_setting_maxOptIterations->setText(settings.value(SETTING_MAX_OPT_ITERATIONS, 4).toString());
+    ui->lineEdit_setting_minOptIterations->setText(settings.value(SETTING_MIN_OPT_ITERATIONS, 1).toString());
+
     mElabPool.setMaxThreadCount( 3 );
 }
 
@@ -183,6 +240,13 @@ MainWindow::~MainWindow()
 
     settings.setValue(SETTING_FFMPEG_URL, ui->lineEdit_URL->text());
     settings.setValue(SETTING_FFMPEG_INPUT_FORMAT, ui->lineEdit_InputFormat->text());
+
+    settings.setValue(SETTING_DESIRED_IMMATURE_DENSITY, ui->lineEdit_setting_desiredImmatureDensity->text());
+    settings.setValue(SETTING_DESIRED_POINT_DENSITY, ui->lineEdit_setting_desiredPointDensity->text());
+    settings.setValue(SETTING_MIN_FRAMES, ui->lineEdit_setting_minFrames->text());
+    settings.setValue(SETTING_MAX_FRAMES, ui->lineEdit_setting_maxFrames->text());
+    settings.setValue(SETTING_MAX_OPT_ITERATIONS, ui->lineEdit_setting_maxOptIterations->text());
+    settings.setValue(SETTING_MIN_OPT_ITERATIONS, ui->lineEdit_setting_minOptIterations->text());
 
     killGstLaunch();
 
@@ -1527,12 +1591,20 @@ void MainWindow::on_pushButton_StartDSO_clicked(bool checked)
 
     using namespace dso;
 
-    setting_desiredImmatureDensity = 1000;
-    setting_desiredPointDensity = 1200;
-    setting_minFrames = 5;
-    setting_maxFrames = 7;
-    setting_maxOptIterations = 4;
-    setting_minOptIterations = 1;
+    //setting_desiredImmatureDensity = 1000;
+    //setting_desiredPointDensity = 1200;
+    //setting_minFrames = 5;
+    //setting_maxFrames = 7;
+    //setting_maxOptIterations = 4;
+    //setting_minOptIterations = 1;
+
+    setting_desiredImmatureDensity = ui->lineEdit_setting_desiredImmatureDensity->text().toInt();
+    setting_desiredPointDensity = ui->lineEdit_setting_desiredPointDensity->text().toInt();
+    setting_minFrames = ui->lineEdit_setting_minFrames->text().toInt();
+    setting_maxFrames = ui->lineEdit_setting_maxFrames->text().toInt();
+    setting_maxOptIterations = ui->lineEdit_setting_maxOptIterations->text().toInt();
+    setting_minOptIterations = ui->lineEdit_setting_minOptIterations->text().toInt();
+
     setting_logStuff = false;
     setting_kfGlobalWeight = 1.3;
 
