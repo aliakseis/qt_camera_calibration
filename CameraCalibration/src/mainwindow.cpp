@@ -1571,19 +1571,12 @@ void MainWindow::on_pushButton_StartDSO_clicked(bool checked)
     }
     else
     {
-        auto wraps = fullSystem->outputWrapper;
-        fullSystem.reset();
-        for (auto ow : wraps) {
-            delete ow;
-        }
-
-        mDsoInitialized = false;
-        mDsoInitializationPostponed = false;
+        stopDso();
     }
 }
 
- void MainWindow::startDso()
- {
+void MainWindow::startDso()
+{
     if (mDsoInitialized) {
         return;
     }
@@ -1653,7 +1646,11 @@ void MainWindow::on_pushButton_StartDSO_clicked(bool checked)
 
 
     if (!disableAllDisplay) {
-        fullSystem->outputWrapper.push_back(new IOWrap::PangolinDSOViewer(w, h));
+        auto stoppedCallback = [this] {
+            QMetaObject::invokeMethod(this, &MainWindow::stopDso);
+        };
+
+        fullSystem->outputWrapper.push_back(new IOWrap::PangolinDSOViewer(w, h, true, stoppedCallback));
     }
             //(int)undistorter->getSize()[0],
             //(int)undistorter->getSize()[1]));
@@ -1671,4 +1668,20 @@ void MainWindow::on_pushButton_StartDSO_clicked(bool checked)
 
     //
     mDsoInitialized = true;
+}
+
+void MainWindow::stopDso()
+{
+    if (mDsoInitialized)
+    {
+        auto wraps = fullSystem->outputWrapper;
+        fullSystem.reset();
+        for (auto ow : wraps) {
+            delete ow;
+        }
+    }
+    mDsoInitialized = false;
+    mDsoInitializationPostponed = false;
+
+    ui->pushButton_StartDSO->setChecked(false);
 }

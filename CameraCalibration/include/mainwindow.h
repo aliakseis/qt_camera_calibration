@@ -49,6 +49,7 @@ protected:
     void stopCamera();
 
     void startDso();
+    void stopDso();
 
 public slots:
     void onNewImage(cv::Mat frame);
