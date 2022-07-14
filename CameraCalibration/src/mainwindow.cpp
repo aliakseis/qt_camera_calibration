@@ -1537,8 +1537,9 @@ void MainWindow::on_pushButton_StartDSO_clicked(bool checked)
     setting_kfGlobalWeight = 1.3;
 
 
-    printf("MODE WITH CALIBRATION, but without exposure times!\n");
-    setting_photometricCalibration = 2;
+    //printf("MODE WITH CALIBRATION, but without exposure times!\n");
+    //setting_photometricCalibration = 2;
+    setting_photometricCalibration = 0;
     setting_affineOptModeA = 0;
     setting_affineOptModeB = 0;
 

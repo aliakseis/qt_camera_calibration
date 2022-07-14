@@ -189,13 +189,12 @@ cv::Mat CameraUndistort::undistort(cv::Mat& raw )
 
     cv::Mat src;
 
-    if (raw.cols == mImgSize.width && raw.rows == mImgSize.height)
-    {
-        src = raw;
-    }
-    else
+    raw.convertTo(src, CV_32F);
+
+
+    if (raw.cols != mImgSize.width || raw.rows != mImgSize.height)
     { 
-        cv::resize(raw, src,
+        cv::resize(src, src,
             mImgSize,
             0, 0, cv::INTER_LINEAR);
     }

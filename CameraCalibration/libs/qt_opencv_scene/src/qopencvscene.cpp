@@ -81,8 +81,11 @@ void QOpenCVScene::setFgImage(const QImage& img)
     setSceneRect( 0,0, img.width(), img.height() );
 }
 
-QImage QOpenCVScene::cvMatToQImage( const cv::Mat &inMat )
+QImage QOpenCVScene::cvMatToQImage( const cv::Mat &src )
 {
+    cv::Mat inMat;
+    src.convertTo(inMat, CV_8U);
+
     switch ( inMat.type() )
     {
     // 8-bit, 4 channel
