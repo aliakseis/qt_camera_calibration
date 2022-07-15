@@ -162,8 +162,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lineEdit_size_x->setValidator(new QIntValidator(10, 9999, this));
     ui->lineEdit_size_y->setValidator(new QIntValidator(10, 9999, this));
 
-    ui->lineEdit_setting_desiredImmatureDensity->setValidator(new QIntValidator(10, 9999, this));
-    ui->lineEdit_setting_desiredPointDensity->setValidator(new QIntValidator(10, 9999, this));
+    ui->lineEdit_setting_desiredImmatureDensity->setValidator(new QIntValidator(10, 99999, this));
+    ui->lineEdit_setting_desiredPointDensity->setValidator(new QIntValidator(10, 99999, this));
     ui->lineEdit_setting_minFrames->setValidator(new QIntValidator(1, 99, this));
     ui->lineEdit_setting_maxFrames->setValidator(new QIntValidator(1, 99, this));
     ui->lineEdit_setting_maxOptIterations->setValidator(new QIntValidator(1, 99, this));
