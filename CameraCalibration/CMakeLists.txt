@@ -21,6 +21,8 @@ find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS Multimedia Widgets)
 
 FIND_PACKAGE( OpenCV 4 REQUIRED )
 
+FIND_PACKAGE( PCL REQUIRED )
+
 
 find_path(AVCODEC_INCLUDE_DIR libavcodec/avcodec.h)
 find_library(AVCODEC_LIBRARY avcodec)
@@ -71,6 +73,7 @@ add_executable(CameraCalibration #WIN32 MACOSX_BUNDLE
 #    include/v4l2compcamera.h
     include/cameraman.h
     include/CustomLineEdit.h
+    include/CustomOutputWrapper.h
     libs/gst_sink_opencv/include/camerathreadbase.h
     libs/gst_sink_opencv/include/camerathread.h
     libs/gst_sink_opencv/include/gst_sink_opencv.hpp
@@ -88,6 +91,7 @@ add_executable(CameraCalibration #WIN32 MACOSX_BUNDLE
 #    src/v4l2compcamera.cpp
     src/cameraman.cpp
     src/CustomLineEdit.cpp
+    src/CustomOutputWrapper.cpp
     src/mainwindow.ui
     ${QRCS}
 )
@@ -105,12 +109,15 @@ target_include_directories(CameraCalibration PUBLIC
     dso/src
 )
 
+link_directories( ${PCL_LIBRARY_DIRS} )
+
 target_link_libraries(CameraCalibration PUBLIC
     # Remove: L/lib
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::OpenGL
     ${OpenCV_LIBRARIES}
+    ${PCL_LIBRARIES}
     ${GSTREAMER_LIBRARIES}
     ${FFMPEG_LIBRARIES} 
     ${AVCODEC_LIBRARY} 

@@ -24,7 +24,7 @@
 #include "FullSystem/PixelSelector2.h"
 
 #include "IOWrapper/Pangolin/PangolinDSOViewer.h"
-#include "IOWrapper/OutputWrapper/SampleOutputWrapper.h"
+//#include "IOWrapper/OutputWrapper/SampleOutputWrapper.h"
 
 #include "ui_mainwindow.h"
 
@@ -47,6 +47,8 @@
 
 #include "qchessboardelab.h"
 #include "qcameracalibrate.h"
+
+#include "CustomOutputWrapper.h"
 
 #include <iostream>
 
@@ -1651,6 +1653,7 @@ void MainWindow::startDso()
         };
 
         fullSystem->outputWrapper.push_back(new IOWrap::PangolinDSOViewer(w, h, true, stoppedCallback));
+        fullSystem->outputWrapper.push_back(new CustomOutputWrapper());
     }
             //(int)undistorter->getSize()[0],
             //(int)undistorter->getSize()[1]));
