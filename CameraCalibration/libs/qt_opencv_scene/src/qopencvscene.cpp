@@ -7,6 +7,72 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
+namespace {
+
+
+QImage cvMatToQImage( cv::Mat& inMat)
+{
+    //cv::Mat inMat;
+    inMat.convertTo(inMat, CV_8U);
+
+    switch ( inMat.type() )
+    {
+    // 8-bit, 4 channel
+    case CV_8UC4:
+    {
+        QImage image( inMat.data, inMat.cols, inMat.rows, inMat.step, QImage::Format_RGB32 );
+
+        return image;
+    }
+
+        // 8-bit, 3 channel
+    case CV_8UC3:
+    {
+        //QImage image( inMat.data, inMat.cols, inMat.rows, inMat.step, QImage::Format_RGB888 );
+        //return image.rgbSwapped();
+
+        //cv::Mat rgbMat;
+        //cv::cvtColor(inMat, rgbMat, cv::COLOR_BGR2RGB); // invert BGR to RGB
+        //return QImage((uchar*)rgbMat.data, inMat.cols, inMat.rows, static_cast<int>(inMat.step), QImage::Format_RGB888).copy();
+
+        QImage result(inMat.cols, inMat.rows, QImage::Format_RGB888);
+        cv::Mat rgbMat(inMat.rows, inMat.cols, CV_8UC3, result.bits(), result.bytesPerLine());
+        cv::cvtColor(inMat, rgbMat, cv::COLOR_BGR2RGB); // invert BGR to RGB
+        return result;
+    }
+
+        // 8-bit, 1 channel
+    case CV_8UC1:
+    {
+        static QVector<QRgb>  sColorTable;
+
+        // only create our color table once
+        if ( sColorTable.isEmpty() )
+        {
+            for ( int i = 0; i < 256; ++i ) {
+                sColorTable.push_back( qRgb( i, i, i ) );
+            }
+        }
+
+        QImage image( inMat.data, inMat.cols, inMat.rows, inMat.step, QImage::Format_Indexed8 );
+
+        image.setColorTable( sColorTable );
+
+        return image;
+    }
+
+    default:
+        qWarning() << "ASM::cvMatToQImage() - cv::Mat image type not handled in switch:" << inMat.type();
+        break;
+    }
+
+    return {};
+}
+
+
+} // namespace
+
+
 QOpenCVScene::QOpenCVScene(QObject *parent) :
     QGraphicsScene(parent),
     mBgPixmapItem(nullptr),
@@ -81,68 +147,11 @@ void QOpenCVScene::setFgImage(const QImage& img)
     setSceneRect( 0,0, img.width(), img.height() );
 }
 
-QImage QOpenCVScene::cvMatToQImage( const cv::Mat &src )
-{
-    cv::Mat inMat;
-    src.convertTo(inMat, CV_8U);
-
-    switch ( inMat.type() )
-    {
-    // 8-bit, 4 channel
-    case CV_8UC4:
-    {
-        QImage image( inMat.data, inMat.cols, inMat.rows, inMat.step, QImage::Format_RGB32 );
-
-        return image;
-    }
-
-        // 8-bit, 3 channel
-    case CV_8UC3:
-    {
-        //QImage image( inMat.data, inMat.cols, inMat.rows, inMat.step, QImage::Format_RGB888 );
-        //return image.rgbSwapped();
-
-        //cv::Mat rgbMat;
-        //cv::cvtColor(inMat, rgbMat, cv::COLOR_BGR2RGB); // invert BGR to RGB
-        //return QImage((uchar*)rgbMat.data, inMat.cols, inMat.rows, static_cast<int>(inMat.step), QImage::Format_RGB888).copy();
-
-        QImage result(inMat.cols, inMat.rows, QImage::Format_RGB888);
-        cv::Mat rgbMat(inMat.rows, inMat.cols, CV_8UC3, result.bits(), result.bytesPerLine());
-        cv::cvtColor(inMat, rgbMat, cv::COLOR_BGR2RGB); // invert BGR to RGB
-        return result;
-    }
-
-        // 8-bit, 1 channel
-    case CV_8UC1:
-    {
-        static QVector<QRgb>  sColorTable;
-
-        // only create our color table once
-        if ( sColorTable.isEmpty() )
-        {
-            for ( int i = 0; i < 256; ++i ) {
-                sColorTable.push_back( qRgb( i, i, i ) );
-            }
-        }
-
-        QImage image( inMat.data, inMat.cols, inMat.rows, inMat.step, QImage::Format_Indexed8 );
-
-        image.setColorTable( sColorTable );
-
-        return image;
-    }
-
-    default:
-        qWarning() << "ASM::cvMatToQImage() - cv::Mat image type not handled in switch:" << inMat.type();
-        break;
-    }
-
-    return {};
-}
 
 QPixmap QOpenCVScene::cvMatToQPixmap( const cv::Mat &inMat )
 {
-    return QPixmap::fromImage( cvMatToQImage( inMat ) );
+    cv::Mat temp(inMat);
+    return QPixmap::fromImage( cvMatToQImage(temp) );
 }
 
 //void QOpenCVScene::mousePressEvent(QGraphicsSceneMouseEvent *event)

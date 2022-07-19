@@ -29,7 +29,7 @@ public slots:
 
 public:
     /// Converts cv::Mat to QImage
-    static QImage  cvMatToQImage( const cv::Mat &inMat );
+    //static QImage  cvMatToQImage( const cv::Mat &inMat );
     /// Converts cv::Mat to QPixmap
     static QPixmap cvMatToQPixmap( const cv::Mat &inMat );
 
