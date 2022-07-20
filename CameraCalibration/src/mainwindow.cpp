@@ -36,6 +36,10 @@
 #include <QSound>
 #include <QSettings>
 
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl/io/pcd_io.h>
+
 #include <memory>
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -51,6 +55,7 @@
 #include "CustomOutputWrapper.h"
 
 #include <iostream>
+#include <functional>
 
 
 const auto SETTING_CB_COLS = QStringLiteral("ChessboardCols");
@@ -106,6 +111,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mCbDetectedSnd(nullptr)
 {
     qRegisterMetaType<cv::Size>("cv::Size");
+    qRegisterMetaType<std::vector<std::array<float, 3>>>("std::vector<std::array<float, 3>>");
 
     setWindowIcon(QIcon(":/icon.ico"));
 
@@ -1381,7 +1387,7 @@ void MainWindow::on_pushButton_load_params_clicked()
     }
     else
     {
-        cv::FileStorage fs( fileName.toStdString(), cv::FileStorage::READ||cv::FileStorage::FORMAT_AUTO );
+        cv::FileStorage fs( fileName.toLocal8Bit().toStdString(), cv::FileStorage::READ||cv::FileStorage::FORMAT_AUTO );
         if (!fs.isOpened())
         {
             return;
@@ -1505,7 +1511,7 @@ void MainWindow::on_pushButton_save_params_clicked()
         }
     }
 
-    cv::FileStorage fs( fileName.toStdString(), cv::FileStorage::WRITE );
+    cv::FileStorage fs( fileName.toLocal8Bit().toStdString(), cv::FileStorage::WRITE );
 
     if( fs.isOpened() )
     {
@@ -1646,14 +1652,19 @@ void MainWindow::startDso()
     fullSystem = std::make_unique<FullSystem>();
     fullSystem->linearizeOperation = false;
 
+    m_pointsCloud.clear();
 
     if (!disableAllDisplay) {
         auto stoppedCallback = [this] {
             QMetaObject::invokeMethod(this, &MainWindow::stopDso);
         };
 
+        auto addPointsCallback = [this](const std::vector<std::array<float, 3>>& points) {
+            QMetaObject::invokeMethod(this, std::bind(&MainWindow::addCloudPoints, this, points));
+        };
+
         fullSystem->outputWrapper.push_back(new IOWrap::PangolinDSOViewer(w, h, true, stoppedCallback));
-        fullSystem->outputWrapper.push_back(new CustomOutputWrapper());
+        fullSystem->outputWrapper.push_back(new CustomOutputWrapper(addPointsCallback));
     }
             //(int)undistorter->getSize()[0],
             //(int)undistorter->getSize()[1]));
@@ -1687,4 +1698,44 @@ void MainWindow::stopDso()
     mDsoInitializationPostponed = false;
 
     ui->pushButton_StartDSO->setChecked(false);
+}
+
+void MainWindow::on_pushButton_SavePointCloud_clicked()
+{
+    if (!mCameraCalib) {
+        return;
+    }
+
+    QString selFilter;
+
+    QString filter1 = tr("PCD (*.pcd)");
+
+    QString fileName = QFileDialog::getSaveFileName(this,
+        tr("Save Point Cloud"), QDir::homePath(),
+        tr("%1").arg(filter1), &selFilter);
+
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    if (!fileName.endsWith(".pcd", Qt::CaseInsensitive))
+    {
+        if (selFilter == filter1)
+        {
+            fileName += ".pcd";
+        }
+    }
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+
+    for (const auto& v : m_pointsCloud)
+    {
+        pcl::PointXYZ point(v[0], v[1], v[2]);
+        cloud->points.push_back(point);
+    }
+
+    cloud->height = 1;
+    cloud->width = cloud->size();
+
+    pcl::io::savePCDFile(fileName.toLocal8Bit().toStdString(), *cloud, true);
 }

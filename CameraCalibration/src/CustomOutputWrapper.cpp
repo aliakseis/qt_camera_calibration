@@ -2,11 +2,17 @@
 
 #include "FullSystem/HessianBlocks.h"
 
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
-#include <pcl/io/pcd_io.h>
+//#include <pcl/point_cloud.h>
+//#include <pcl/point_types.h>
+//#include <pcl/io/pcd_io.h>
 
-CustomOutputWrapper::~CustomOutputWrapper()
+CustomOutputWrapper::CustomOutputWrapper(std::function<void(const PointsArray&)> pointsCallback)
+    : m_pointsCallback(pointsCallback)
+{
+}
+
+CustomOutputWrapper::~CustomOutputWrapper() = default;
+/*
 {
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
@@ -21,6 +27,7 @@ CustomOutputWrapper::~CustomOutputWrapper()
 
     pcl::io::savePCDFile("c:/out/cloud.pcd", *cloud, true);
 }
+*/
 
 void CustomOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian*> &frames, bool final, dso::CalibHessian* HCalib)
 {
@@ -101,7 +108,7 @@ void CustomOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian*> &fram
 
 
 
-        std::vector<Coord3d> coords;
+        PointsArray coords;
 
         for (auto f : frames)
         {
@@ -154,7 +161,9 @@ void CustomOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian*> &fram
             }
         }
 
-        std::lock_guard<std::mutex> guard(m_mtxCoords);
-        m_coords.insert(m_coords.end(), coords.begin(), coords.end());
+        //std::lock_guard<std::mutex> guard(m_mtxCoords);
+        //m_coords.insert(m_coords.end(), coords.begin(), coords.end());
+
+        m_pointsCallback(coords);
     }
 }

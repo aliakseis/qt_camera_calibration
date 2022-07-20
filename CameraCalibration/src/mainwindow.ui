@@ -158,7 +158,7 @@
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>50</height>
+             <height>48</height>
             </size>
            </property>
            <property name="font">
@@ -1211,7 +1211,7 @@ cameras. Useful if connection and USB camera</string>
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>50</height>
+               <height>48</height>
               </size>
              </property>
              <property name="font">
@@ -1945,7 +1945,7 @@ are used to refine the parameters</string>
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>50</height>
+               <height>48</height>
               </size>
              </property>
              <property name="font">
@@ -1969,6 +1969,46 @@ are used to refine the parameters</string>
              </property>
             </widget>
            </item>
+
+
+           <item>
+            <widget class="QPushButton" name="pushButton_SavePointCloud">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <!--property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property-->
+             <property name="toolTip">
+              <string>Saving Direct Sparse Odometry Point Cloud.</string>
+             </property>
+             <property name="text">
+              <string>Save Point Cloud</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+
+
+
           </layout>
          </item>
          <item row="0" column="1">

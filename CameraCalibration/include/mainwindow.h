@@ -51,6 +51,11 @@ protected:
     void startDso();
     void stopDso();
 
+    void addCloudPoints(const std::vector<std::array<float, 3>>& pointsCloud)
+    {
+        m_pointsCloud.insert(m_pointsCloud.end(), pointsCloud.begin(), pointsCloud.end());
+    }
+
 public slots:
     void onNewImage(cv::Mat frame);
     void onNewCbImage(cv::Mat cbImage);
@@ -94,6 +99,8 @@ private slots:
     void on_pushButton_reset_params_clicked();
     void on_pushButton_load_params_clicked();
     void on_pushButton_save_params_clicked();
+
+    void on_pushButton_SavePointCloud_clicked();
 
     void on_horizontalSlider_alpha_valueChanged(int value);
 
@@ -149,6 +156,8 @@ private:
     std::unique_ptr<dso::FullSystem> fullSystem;
     std::unique_ptr<dso::Undistort> undistorter;
     int frameID = 0;
+
+    std::vector<std::array<float, 3>> m_pointsCloud;
 
     bool mParametersReset = false;
 };
