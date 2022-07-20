@@ -1660,7 +1660,7 @@ void MainWindow::startDso()
         };
 
         auto addPointsCallback = [this](const std::vector<std::array<float, 3>>& points) {
-            QMetaObject::invokeMethod(this, std::bind(&MainWindow::addCloudPoints, this, points));
+            QMetaObject::invokeMethod(this, [this, points] { addCloudPoints(points); });
         };
 
         fullSystem->outputWrapper.push_back(new IOWrap::PangolinDSOViewer(w, h, true, stoppedCallback));
