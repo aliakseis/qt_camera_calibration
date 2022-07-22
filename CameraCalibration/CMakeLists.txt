@@ -45,7 +45,7 @@ find_library(SWRESAMPLE_LIBRARY swresample)
 
 include(cmake/detect_gstreamer.cmake)
 
-set_directory_properties(PROPERTIES CMAKE_CONFIGURE_DEPENDS ".git")
+set_directory_properties(PROPERTIES CMAKE_CONFIGURE_DEPENDS "../.git")
 include(cmake/version_from_git.cmake)
 version_from_git()
 
