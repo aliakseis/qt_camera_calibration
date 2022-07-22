@@ -89,7 +89,23 @@ cv::Size FFmpegThread::getSize()
 {
     if (m_codecContext) {
         return { m_codecContext->width, m_codecContext->height };
+    }
+    return {};
 }
+
+std::pair<int, int> FFmpegThread::getFps()
+{
+    auto videoStream = m_formatContext->streams[m_streamNumber];
+
+    if (videoStream->r_frame_rate.den)
+        return { videoStream->r_frame_rate.num, videoStream->r_frame_rate.den };
+
+    if (videoStream->avg_frame_rate.den)
+        return { videoStream->avg_frame_rate.num, videoStream->avg_frame_rate.den };
+
+    if (videoStream->time_base.num && videoStream->time_base.den)
+        return { videoStream->time_base.den, videoStream->time_base.num };
+
     return {};
 }
 

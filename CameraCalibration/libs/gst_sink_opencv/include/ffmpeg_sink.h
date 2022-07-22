@@ -30,6 +30,7 @@ public:
     double getBufPerc() override { return m_queueSize / (double)MAX_QUEUE_SIZE; }
     void dataConsumed() override;
     cv::Size getSize() override;
+    std::pair<int, int> getFps() override;
     void requestInterruption() override;
 
 signals:

@@ -20,6 +20,7 @@ public:
     double getBufPerc() override;
     void dataConsumed() override {}
     cv::Size getSize() override { return {}; }
+    std::pair<int, int> getFps() override { return {}; }
 
 signals:
     void newImage( cv::Mat frame );

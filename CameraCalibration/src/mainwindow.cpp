@@ -714,6 +714,9 @@ void MainWindow::on_pushButton_camera_connect_disconnect_clicked(bool checked)
             auto size = mCameraThread->getSize();
             mSrcWidth = size.width;
             mSrcHeight = size.height;
+
+            std::tie(mSrcFpsDen, mSrcFpsNum) = mCameraThread->getFps();
+            mSrcFps = static_cast<double>(mSrcFpsDen) / mSrcFpsNum;
         }
 
         mCameraCalib = new QCameraCalibrate( cv::Size(mSrcWidth, mSrcHeight), mCbSize, mCbSizeMm, fisheye, maxCount );
