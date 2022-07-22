@@ -28,6 +28,7 @@
 
 #include "ui_mainwindow.h"
 
+#include "config.h"
 
 #include <QCameraInfo>
 #include <QGLWidget>
@@ -131,6 +132,11 @@ MainWindow::MainWindow(QWidget *parent) :
     mOpenCvVer.setFrameStyle(QFrame::Panel | QFrame::Sunken);
     ui->statusBar->addPermanentWidget( &mOpenCvVer );
     // <<<<< OpenCV version
+
+    // Git version
+    mGitVer.setText(PROJECT_VERSION_GIT_FULL);
+    mGitVer.setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    ui->statusBar->addPermanentWidget(&mGitVer);
 
     mCalibInfo.setText(tr("Ready"));
     mCalibInfo.setFrameStyle(QFrame::Panel | QFrame::Sunken);

@@ -112,6 +112,7 @@ private:
     Ui::MainWindow *ui;
 
     QLabel mOpenCvVer;
+    QLabel mGitVer;
     QLabel mCalibInfo;
 
     QProgressBar mCamBuffer;

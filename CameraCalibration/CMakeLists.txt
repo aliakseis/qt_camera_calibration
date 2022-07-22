@@ -45,6 +45,11 @@ find_library(SWRESAMPLE_LIBRARY swresample)
 
 include(cmake/detect_gstreamer.cmake)
 
+set_directory_properties(PROPERTIES CMAKE_CONFIGURE_DEPENDS ".git")
+include(cmake/version_from_git.cmake)
+version_from_git()
+
+
 if (HAVE_GSTREAMER)
 	message ("    GStreamer: (${GSTREAMER_VERSION})")
 else()
@@ -55,6 +60,8 @@ find_package(Pangolin 0.2 QUIET)
 
 add_subdirectory(dso)
 
+
+add_subdirectory("config")
 
 # Generate rules for building source files from the resources
 qt5_add_resources(QRCS resources.qrc)
@@ -112,6 +119,7 @@ target_include_directories(CameraCalibration PUBLIC
 link_directories( ${PCL_LIBRARY_DIRS} )
 
 target_link_libraries(CameraCalibration PUBLIC
+    config
     # Remove: L/lib
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
