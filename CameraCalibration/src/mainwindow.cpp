@@ -678,17 +678,20 @@ void MainWindow::on_pushButton_camera_connect_disconnect_clicked(bool checked)
 {
     if( checked )
     {
-        const auto& mCamera = mCameras[ui->comboBox_camera->currentIndex()];
-        const auto& mode = mCamera.modes[ui->comboBox_camera_res->currentIndex()];
+        if (!mCameras.empty())
+        {
+            const auto& mCamera = mCameras[ui->comboBox_camera->currentIndex()];
+            const auto& mode = mCamera.modes[ui->comboBox_camera_res->currentIndex()];
 
-        mLaunchLine = mCamera.launchLine;
+            mLaunchLine = mCamera.launchLine;
 
-        mSrcFormat = mode.format;
-        mSrcWidth = mode.w;
-        mSrcHeight = mode.h;
-        mSrcFps = mode.fps();
-        mSrcFpsNum = mode.num;
-        mSrcFpsDen = mode.den;
+            mSrcFormat = mode.format;
+            mSrcWidth = mode.w;
+            mSrcHeight = mode.h;
+            mSrcFps = mode.fps();
+            mSrcFpsNum = mode.num;
+            mSrcFpsDen = mode.den;
+        }
 
         updateCbParams();
 
@@ -1441,18 +1444,22 @@ void MainWindow::on_pushButton_load_params_clicked()
                 //fs["Width"] >> w;
                 //fs["Height"] >> h;
 
-                const auto& camera = mCameras[ui->comboBox_camera->currentIndex()];
-
                 bool matched = false;
-                for (int i = 0; i < camera.modes.size(); i++)
-                {
-                    const auto& mode = camera.modes[ui->comboBox_camera_res->currentIndex()];
 
-                    if (mode.w == imgSize.width && mode.h == imgSize.height)
+                if (!mCameras.empty())
+                {
+                    const auto& camera = mCameras[ui->comboBox_camera->currentIndex()];
+
+                    for (int i = 0; i < camera.modes.size(); i++)
                     {
-                        matched = true;
-                        ui->comboBox_camera_res->setCurrentIndex(i);
-                        break;
+                        const auto& mode = camera.modes[ui->comboBox_camera_res->currentIndex()];
+
+                        if (mode.w == imgSize.width && mode.h == imgSize.height)
+                        {
+                            matched = true;
+                            ui->comboBox_camera_res->setCurrentIndex(i);
+                            break;
+                        }
                     }
                 }
 
