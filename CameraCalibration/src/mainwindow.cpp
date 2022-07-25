@@ -459,9 +459,13 @@ void MainWindow::onNewImage( cv::Mat frame )
     static int frmCnt=0;
     static int frameW = 0;
     static int frameH = 0;
+    static int viewH_raw = 0;
+    static int viewH_checkboard = 0;
 
     if( frameW != frame.cols ||
-            frameH != frame.rows)
+            frameH != frame.rows ||
+            ui->graphicsView_raw->height() != viewH_raw ||
+        ui->graphicsView_checkboard->height() != viewH_checkboard)
     {
         ui->graphicsView_raw->fitInView(QRectF(0,0, frame.cols, frame.rows),
                                         Qt::KeepAspectRatio );
@@ -471,6 +475,8 @@ void MainWindow::onNewImage( cv::Mat frame )
         //                                        Qt::KeepAspectRatio );
         frameW = frame.cols;
         frameH = frame.rows;
+        viewH_raw = ui->graphicsView_raw->height();
+        viewH_checkboard = ui->graphicsView_checkboard->height();
     }
 
     const auto pixmap = QOpenCVScene::cvMatToQPixmap(frame);
@@ -557,13 +563,15 @@ void MainWindow::onNewImage( cv::Mat frame )
     auto fitUndistorted = [this](int w, int h) {
         static int frameW = 0;
         static int frameH = 0;
+        static int viewH = 0;
 
-        if (frameW != w || frameH != h)
+        if (frameW != w || frameH != h || ui->graphicsView_undistorted->height() != viewH)
         {
             ui->graphicsView_undistorted->fitInView(QRectF(0, 0, w, h),
                 Qt::KeepAspectRatio);
             frameW = w;
             frameH = h;
+            viewH = ui->graphicsView_undistorted->height();
         }
     };
 
