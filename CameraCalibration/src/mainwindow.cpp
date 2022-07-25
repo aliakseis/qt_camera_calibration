@@ -164,6 +164,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView_undistorted->setScene( mCameraSceneUndistorted );
     ui->graphicsView_undistorted->setBackgroundBrush( QBrush( QColor(150,50,50) ) );
 
+    ui->splitter->setStretchFactor(0, 1);
+    ui->splitter->setStretchFactor(1, 1);
+
     // <<<<< Stream rendering
 
     ui->lineEdit_cb_cols->setValidator(new QIntValidator(2, 99, this));
