@@ -1167,6 +1167,8 @@ void MainWindow::on_pushButton_reset_params_clicked()
 
     updateCbParams();
 
+    undistorter.reset();
+
     if (mCameraCalib)
     {
         disconnect(mCameraCalib, &QCameraCalibrate::newCameraParams,
