@@ -14,8 +14,11 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_5">
-    <item row="0" column="0">
+   <widget class="QSplitter" name="splitter">
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+    <widget class="QWidget" name="layoutWidget">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QGroupBox" name="groupBox_raw">
@@ -125,8 +128,8 @@
        </widget>
       </item>
      </layout>
-    </item>
-    <item row="1" column="0">
+    </widget>
+    <widget class="QWidget" name="layoutWidget">
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
        <widget class="QGroupBox" name="groupBox_camera">
@@ -1368,7 +1371,6 @@ minor than 1 px</string>
              </property>
             </spacer>
            </item>
-
            <item>
             <layout class="QGridLayout" name="gridLayout_2">
              <property name="sizeConstraint">
@@ -1585,7 +1587,6 @@ are used to refine the parameters</string>
              </item>
             </layout>
            </item>
-
            <item>
             <spacer name="verticalSpacer">
              <property name="orientation">
@@ -1599,11 +1600,6 @@ are used to refine the parameters</string>
              </property>
             </spacer>
            </item>
-
-
-
-
-
            <item>
             <layout class="QGridLayout" name="gridLayout_22">
              <property name="sizeConstraint">
@@ -1612,8 +1608,6 @@ are used to refine the parameters</string>
              <property name="spacing">
               <number>1</number>
              </property>
-
-
              <item row="0" column="0">
               <layout class="QVBoxLayout" name="verticalLayout_5">
                <item>
@@ -1716,8 +1710,6 @@ are used to refine the parameters</string>
                </item>
               </layout>
              </item>
-
-
              <item row="1" column="0">
               <layout class="QVBoxLayout" name="verticalLayout_5">
                <item>
@@ -1820,7 +1812,6 @@ are used to refine the parameters</string>
                </item>
               </layout>
              </item>
-
              <item row="2" column="0">
               <layout class="QVBoxLayout" name="verticalLayout_5">
                <item>
@@ -1923,17 +1914,8 @@ are used to refine the parameters</string>
                </item>
               </layout>
              </item>
-
-
-
-
-
-
             </layout>
            </item>
-
-
-
            <item>
             <widget class="QPushButton" name="pushButton_StartDSO">
              <property name="sizePolicy">
@@ -1969,8 +1951,6 @@ are used to refine the parameters</string>
              </property>
             </widget>
            </item>
-
-
            <item>
             <widget class="QPushButton" name="pushButton_SavePointCloud">
              <property name="sizePolicy">
@@ -1979,19 +1959,6 @@ are used to refine the parameters</string>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <!--property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>50</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property-->
              <property name="toolTip">
               <string>Saving Direct Sparse Odometry Point Cloud.</string>
              </property>
@@ -2006,9 +1973,6 @@ are used to refine the parameters</string>
              </property>
             </widget>
            </item>
-
-
-
           </layout>
          </item>
          <item row="0" column="1">
@@ -2037,8 +2001,8 @@ are used to refine the parameters</string>
        </widget>
       </item>
      </layout>
-    </item>
-   </layout>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
