@@ -124,8 +124,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mCbDetectedSnd = new QSound( "://sound/cell-phone-1-nr0.wav", this);
 
-    updateOpenCvVer();
-
     // >>>>> OpenCV version
     QString ocvVers = updateOpenCvVer();
     mOpenCvVer.setText( ocvVers );
@@ -165,6 +163,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView_undistorted->setViewport( new QGLWidget );
     ui->graphicsView_undistorted->setScene( mCameraSceneUndistorted );
     ui->graphicsView_undistorted->setBackgroundBrush( QBrush( QColor(150,50,50) ) );
+
+    ui->splitter->setStretchFactor(0, 1);
+    ui->splitter->setStretchFactor(1, 1);
 
     // <<<<< Stream rendering
 
