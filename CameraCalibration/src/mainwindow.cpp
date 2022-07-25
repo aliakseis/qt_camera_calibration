@@ -124,8 +124,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mCbDetectedSnd = new QSound( "://sound/cell-phone-1-nr0.wav", this);
 
-    updateOpenCvVer();
-
     // >>>>> OpenCV version
     QString ocvVers = updateOpenCvVer();
     mOpenCvVer.setText( ocvVers );
