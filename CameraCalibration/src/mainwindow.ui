@@ -169,7 +169,7 @@
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>48</height>
+            <height>38</height>
            </size>
           </property>
           <property name="font">
@@ -1222,7 +1222,7 @@ cameras. Useful if connection and USB camera</string>
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>48</height>
+              <height>38</height>
              </size>
             </property>
             <property name="font">
@@ -1935,7 +1935,7 @@ are used to refine the parameters</string>
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>48</height>
+              <height>38</height>
              </size>
             </property>
             <property name="font">
