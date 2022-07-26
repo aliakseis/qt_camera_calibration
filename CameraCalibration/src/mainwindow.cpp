@@ -538,26 +538,29 @@ void MainWindow::onNewImage( cv::Mat frame )
     else
     {
         rectified = mCameraCalib->undistort(frame);
-        // use rectified
-        cv::Mat imgGray;
-        if (rectified.channels() == 1)
+        if (!rectified.empty())
         {
-            imgGray = rectified;
-        }
-        else
-        {
-            cv::cvtColor(rectified, imgGray, cv::COLOR_BGR2GRAY);
-        }
+            // use rectified
+            cv::Mat imgGray;
+            if (rectified.channels() == 1)
+            {
+                imgGray = rectified;
+            }
+            else
+            {
+                cv::cvtColor(rectified, imgGray, cv::COLOR_BGR2GRAY);
+            }
 
-        cv::Mat imgFloat;
-        imgGray.convertTo(imgFloat, CV_32F);
+            cv::Mat imgFloat;
+            imgGray.convertTo(imgFloat, CV_32F);
 
-        //dso::MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
-        //undistImg.reset(undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0f));
-        undistImg = std::make_unique<dso::ImageAndExposure>(imgGray.cols, imgGray.rows);
-        cv::Mat dst(undistImg->h, undistImg->w, CV_32FC1, undistImg->image);
-        //imgGray.convertTo(dst, CV_32F);
-        normalize(imgFloat, dst, 0, 255, cv::NORM_MINMAX);
+            //dso::MinimalImageB minImg(imgGray.cols, imgGray.rows, imgGray.data);
+            //undistImg.reset(undistorter->undistort<unsigned char>(&minImg, 1, 0, 1.0f));
+            undistImg = std::make_unique<dso::ImageAndExposure>(imgGray.cols, imgGray.rows);
+            cv::Mat dst(undistImg->h, undistImg->w, CV_32FC1, undistImg->image);
+            //imgGray.convertTo(dst, CV_32F);
+            normalize(imgFloat, dst, 0, 255, cv::NORM_MINMAX);
+        }
     }
 
     auto fitUndistorted = [this](int w, int h) {
@@ -637,8 +640,16 @@ void MainWindow::onNewImage( cv::Mat frame )
         // TODO?
         //undistImg->timestamp = img->header.stamp.toSec(); // relay the timestamp to dso
 
-        fullSystem->addActiveFrame(undistImg.get(), frameID);
-        frameID++;
+        if (undistImg)
+        {
+            try {
+                fullSystem->addActiveFrame(undistImg.get(), frameID);
+                frameID++;
+            }
+            catch (const std::exception& ex) {
+                qDebug() << __FUNCTION__ << ": exception: " << typeid(ex).name() << ": " << ex.what();
+            }
+        }
         //delete undistImg;
     }
 }
@@ -1167,6 +1178,7 @@ void MainWindow::on_pushButton_reset_params_clicked()
 
     updateCbParams();
 
+    stopDso();
     undistorter.reset();
 
     if (mCameraCalib)
@@ -1663,6 +1675,13 @@ void MainWindow::startDso()
         w = imgSize.width;
         h = imgSize.height;
         cv::cv2eigen(K, k);
+    }
+
+    if (!w) {
+        w = mSrcWidth;
+    }
+    if (!h) {
+        h = mSrcHeight;
     }
 
     printf("\nUsed Kamera Matrix:\n");
