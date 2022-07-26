@@ -34,7 +34,7 @@ public:
     void setFisheye( bool fisheye );
 
 protected:
-    void create3DChessboardCorners(cv::Size boardSize, double squareSize);
+    void create3DChessboardCorners(const cv::Size& boardSize, double squareSize);
 
 signals:
     void newCameraParams(cv::Mat K, cv::Mat D, const cv::Size& imgSize, bool refined, double reprojErr );

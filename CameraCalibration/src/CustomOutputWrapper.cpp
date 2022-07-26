@@ -1,10 +1,12 @@
 #include "CustomOutputWrapper.h"
 
+#include <utility>
+
 #include "FullSystem/HessianBlocks.h"
 
 
 CustomOutputWrapper::CustomOutputWrapper(std::function<void(const PointsArray&)> pointsCallback)
-    : m_pointsCallback(pointsCallback)
+    : m_pointsCallback(std::move(pointsCallback))
 {
 }
 

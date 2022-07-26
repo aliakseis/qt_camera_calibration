@@ -3,7 +3,7 @@
 #include <opencv2/calib3d/calib3d.hpp>
 #include <utility>
 
-CameraUndistort::CameraUndistort(cv::Size imgSize, bool fishEye, cv::Mat intr, cv::Mat dist, double alpha)
+CameraUndistort::CameraUndistort(const cv::Size& imgSize, bool fishEye, const cv::Mat&  /*intr*/, const cv::Mat&  /*dist*/, double alpha)
 {
     mImgSize = imgSize;
 
@@ -101,7 +101,7 @@ bool CameraUndistort::setCameraParams(cv::Size imgSize, bool fishEye, cv::Mat in
     return true;
 }
 
-bool CameraUndistort::saveCameraParams( std::string fileName )
+bool CameraUndistort::saveCameraParams( const std::string& fileName )
 {
     cv::FileStorage fs( fileName, cv::FileStorage::WRITE );
 
@@ -119,7 +119,7 @@ bool CameraUndistort::saveCameraParams( std::string fileName )
     return true;
 }
 
-bool CameraUndistort::loadCameraParams( std::string fileName )
+bool CameraUndistort::loadCameraParams( const std::string& fileName )
 {
     cv::FileStorage fs( fileName, cv::FileStorage::READ );
 

@@ -14,7 +14,7 @@
 
 using namespace std;
 
-QCameraCalibrate::QCameraCalibrate(cv::Size imgSize, cv::Size cbSize, float cbSquareSizeMm, bool fishEye, int refineThreshm, QObject *parent)
+QCameraCalibrate::QCameraCalibrate(cv::Size imgSize, cv::Size cbSize, float cbSquareSizeMm, bool  /*fishEye*/, int refineThreshm, QObject *parent)
     : QObject(parent)
     , mUndistort(nullptr)
 {
@@ -200,7 +200,7 @@ cv::Mat QCameraCalibrate::undistort(cv::Mat& raw)
     return res;
 }
 
-void QCameraCalibrate::create3DChessboardCorners( cv::Size boardSize, double squareSize )
+void QCameraCalibrate::create3DChessboardCorners( const cv::Size& boardSize, double squareSize )
 {
     // This function creates the 3D points of your chessboard in its own coordinate system
     double width = (boardSize.width-1)*squareSize;

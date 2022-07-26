@@ -7,8 +7,8 @@
 class CameraUndistort
 {
 public:
-    explicit CameraUndistort( cv::Size imgSize, bool fishEye=false,
-                              cv::Mat intr=cv::Mat(), cv::Mat dist=cv::Mat(),
+    explicit CameraUndistort( const cv::Size& imgSize, bool fishEye=false,
+                              const cv::Mat& intr=cv::Mat(), const cv::Mat& dist=cv::Mat(),
                               double alpha=0.0 );
 
     bool setCameraParams( cv::Size imgSize, bool fishEye, cv::Mat intr, cv::Mat dist, double alpha );
@@ -16,8 +16,8 @@ public:
 
     void setImageSize(int width, int height);
 
-    bool loadCameraParams( std::string fileName );
-    bool saveCameraParams( std::string fileName );
+    bool loadCameraParams( const std::string& fileName );
+    bool saveCameraParams( const std::string& fileName );
 
     bool setNewAlpha( double alpha );
     bool setFisheye( bool fisheye );
