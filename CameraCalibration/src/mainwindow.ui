@@ -1206,7 +1206,7 @@ cameras. Useful if connection and USB camera</string>
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Chessboard</string>
+        <string>Chessboard / DSO</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_9">
         <item row="0" column="0">
