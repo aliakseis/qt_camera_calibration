@@ -48,6 +48,11 @@
 
 #include <opencv2/core/eigen.hpp>
 
+extern "C" {
+#include <libavformat/avformat.h>
+#include <libavdevice/avdevice.h>
+}
+
 #include <vector>
 
 #include "qchessboardelab.h"
@@ -207,6 +212,19 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(edit, &CustomLineEdit::validationError, validationErrorLam);
     }
 
+    avdevice_register_all();
+
+    QStringList inputFormats;
+    inputFormats.push_back({});
+    void *i{};
+    while (auto fmt = av_demuxer_iterate(&i))
+    {
+        inputFormats.push_back(fmt->name);
+    }
+    std::sort(inputFormats.begin(), inputFormats.end());
+    ui->comboBox_InputFormat->addItems(inputFormats);
+
+
     QSettings settings;
     ui->lineEdit_cb_cols->setText(settings.value(SETTING_CB_COLS, 10).toString());
     ui->lineEdit_cb_rows->setText(settings.value(SETTING_CB_ROWS, 7).toString());
@@ -216,7 +234,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->checkBox_fisheye->setChecked(settings.value(SETTING_FISHEYE, true).toBool());
 
     ui->lineEdit_URL->setText(settings.value(SETTING_FFMPEG_URL).toString());
-    ui->lineEdit_InputFormat->setText(settings.value(SETTING_FFMPEG_INPUT_FORMAT).toString());
+    ui->comboBox_InputFormat->setCurrentText(settings.value(SETTING_FFMPEG_INPUT_FORMAT).toString());
 
     (settings.value(SETTING_USE_FFMPEG, false).toBool()
         ? ui->ffmpegSource : ui->gstreamerSource)->setChecked(true);
@@ -254,7 +272,7 @@ MainWindow::~MainWindow()
     settings.setValue(SETTING_USE_FFMPEG, ui->ffmpegSource->isChecked());
 
     settings.setValue(SETTING_FFMPEG_URL, ui->lineEdit_URL->text());
-    settings.setValue(SETTING_FFMPEG_INPUT_FORMAT, ui->lineEdit_InputFormat->text());
+    settings.setValue(SETTING_FFMPEG_INPUT_FORMAT, ui->comboBox_InputFormat->currentText());
 
     settings.setValue(SETTING_DESIRED_IMMATURE_DENSITY, ui->lineEdit_setting_desiredImmatureDensity->text());
     settings.setValue(SETTING_DESIRED_POINT_DENSITY, ui->lineEdit_setting_desiredPointDensity->text());
@@ -358,7 +376,7 @@ bool MainWindow::startCamera()
     {
         const auto ffmpegThread = new FFmpegThread(
             ui->lineEdit_URL->text().toStdString(),
-            ui->lineEdit_InputFormat->text().toStdString());
+            ui->comboBox_InputFormat->currentText().toStdString());
 
         if (!ffmpegThread->init())
         {

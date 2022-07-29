@@ -268,6 +268,18 @@
            </widget>
           </item>
           <item>
+           <widget class="QComboBox" name="comboBox_InputFormat">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+
+
+          <!--item>
            <widget class="QLineEdit" name="lineEdit_InputFormat">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -293,7 +305,9 @@
              <set>Qt::AlignCenter</set>
             </property>
            </widget>
-          </item>
+          </item-->
+
+
          </layout>
         </item>
         <item row="1" column="0">
