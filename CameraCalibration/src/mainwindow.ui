@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1726</width>
+    <width>1445</width>
     <height>989</height>
    </rect>
   </property>
@@ -277,37 +277,6 @@
             </property>
            </widget>
           </item>
-
-
-          <!--item>
-           <widget class="QLineEdit" name="lineEdit_InputFormat">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>24</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>8</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item-->
-
-
          </layout>
         </item>
         <item row="1" column="0">
@@ -1274,6 +1243,9 @@ just calculated or loaded.</string>
             </property>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_8">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_reproj_err">
                 <property name="sizePolicy">
@@ -1329,6 +1301,9 @@ minor than 1 px</string>
             </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_7">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_7">
                 <property name="sizePolicy">
@@ -1403,6 +1378,9 @@ minor than 1 px</string>
             </property>
             <item row="0" column="0">
              <layout class="QVBoxLayout" name="verticalLayout_5">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_5">
                 <property name="sizePolicy">
@@ -1454,6 +1432,9 @@ minor than 1 px</string>
             </item>
             <item row="0" column="1">
              <layout class="QVBoxLayout" name="verticalLayout_4">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_4">
                 <property name="sizePolicy">
@@ -1505,6 +1486,9 @@ minor than 1 px</string>
             </item>
             <item row="1" column="0">
              <layout class="QVBoxLayout" name="verticalLayout_6">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_6">
                 <property name="sizePolicy">
@@ -1556,6 +1540,9 @@ minor than 1 px</string>
             </item>
             <item row="1" column="1">
              <layout class="QVBoxLayout" name="verticalLayout_10">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_10">
                 <property name="sizePolicy">
@@ -1632,6 +1619,9 @@ are used to refine the parameters</string>
             </property>
             <item row="0" column="0">
              <layout class="QVBoxLayout" name="verticalLayout_5">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_5">
                 <property name="sizePolicy">
@@ -1683,6 +1673,9 @@ are used to refine the parameters</string>
             </item>
             <item row="0" column="1">
              <layout class="QVBoxLayout" name="verticalLayout_4">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_4">
                 <property name="sizePolicy">
@@ -1734,6 +1727,9 @@ are used to refine the parameters</string>
             </item>
             <item row="1" column="0">
              <layout class="QVBoxLayout" name="verticalLayout_5">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_5">
                 <property name="sizePolicy">
@@ -1785,6 +1781,9 @@ are used to refine the parameters</string>
             </item>
             <item row="1" column="1">
              <layout class="QVBoxLayout" name="verticalLayout_4">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_4">
                 <property name="sizePolicy">
@@ -1836,6 +1835,9 @@ are used to refine the parameters</string>
             </item>
             <item row="2" column="0">
              <layout class="QVBoxLayout" name="verticalLayout_5">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_5">
                 <property name="sizePolicy">
@@ -1887,6 +1889,9 @@ are used to refine the parameters</string>
             </item>
             <item row="2" column="1">
              <layout class="QVBoxLayout" name="verticalLayout_4">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_4">
                 <property name="sizePolicy">
@@ -2030,7 +2035,7 @@ are used to refine the parameters</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1726</width>
+     <width>1445</width>
      <height>21</height>
     </rect>
    </property>
