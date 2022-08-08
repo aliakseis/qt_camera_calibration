@@ -41,7 +41,6 @@ public:
     ~MainWindow();
 
 protected:
-    QString updateOpenCvVer();
     QStringList updateCameraInfo();
     bool startGstProcess();
     bool killGstLaunch();
