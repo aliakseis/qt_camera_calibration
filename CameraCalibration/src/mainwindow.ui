@@ -158,7 +158,25 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+
+
+
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_camera">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+
+
+        <item row="6" column="0" colspan="2">
          <widget class="QPushButton" name="pushButton_camera_connect_disconnect">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -187,20 +205,7 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_camera">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
+        <item row="5" column="0" colspan="2">
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
            <widget class="QLabel" name="label_2">
@@ -279,7 +284,7 @@
           </item>
          </layout>
         </item>
-        <item row="1" column="0">
+        <item row="1" column="0" colspan="2">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <widget class="QComboBox" name="comboBox_camera">
@@ -310,7 +315,7 @@ cameras. Useful if connection and USB camera</string>
           </item>
          </layout>
         </item>
-        <item row="7" column="0">
+        <item row="7" column="0" colspan="2">
          <spacer name="verticalSpacer_5">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -326,7 +331,7 @@ cameras. Useful if connection and USB camera</string>
           </property>
          </spacer>
         </item>
-        <item row="8" column="0">
+        <item row="8" column="0" colspan="2">
          <widget class="QGroupBox" name="groupBox_params">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -1150,14 +1155,14 @@ cameras. Useful if connection and USB camera</string>
           </layout>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="4" column="0" colspan="2">
          <widget class="QRadioButton" name="ffmpegSource">
           <property name="text">
            <string>FFmpeg source</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="3" column="0" colspan="2">
          <layout class="QHBoxLayout" name="verticalLayout_9">
           <item>
            <widget class="QLabel" name="label_8">
