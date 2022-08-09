@@ -66,6 +66,7 @@ add_subdirectory("config")
 # Generate rules for building source files from the resources
 qt5_add_resources(QRCS resources.qrc)
 
+add_definitions("-DSOPHUS_USE_BASIC_LOGGING")
 
 if (MSVC)
      set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc -D_USE_MATH_DEFINES -D__SSE3__")

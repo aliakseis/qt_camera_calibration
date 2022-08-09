@@ -12,7 +12,7 @@ function(version_from_git)
     if(IS_DIRECTORY ${PROJECT_GIT_REPOSITORY})
         message("Project git repository found ${PROJECT_GIT_REPOSITORY}")
     else()
-        message(FATAL_ERROR "Project git repository not found")
+        message("Project git repository not found")
     endif()
 
     # Setting command that gets version from git repository
